@@ -26,13 +26,27 @@
   </div>
 </div>
 <script>
+  // The loader dismisses when:
+  //   - the actual hero video on screen fires canplay (signal: window.__joHeroReady = true), AND
+  //   - at least 1.6s has passed (so the seal animation completes)
+  //   - or 4s ceiling as a safety net
   (function() {
     var loader = document.getElementById('jo-loader');
     if (!loader) return;
-    setTimeout(function() {
+    var minMs = 1600;
+    var maxMs = 4000;
+    var t0 = performance.now();
+    function dismiss() {
       loader.classList.add('gone');
       setTimeout(function() { loader.parentNode && loader.parentNode.removeChild(loader); }, 900);
-    }, 2000);
+    }
+    function tick() {
+      var elapsed = performance.now() - t0;
+      if (elapsed >= maxMs) { dismiss(); return; }
+      if (elapsed >= minMs && window.__joHeroReady) { dismiss(); return; }
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
   })();
 </script>
 <div id="root"></div>

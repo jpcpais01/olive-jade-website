@@ -24,6 +24,13 @@ function HeroSlide({ slot, i, active, onReady }) {
     }
   }, [active]);
 
+  const handleReady = () => {
+    if (i === 0) {
+      window.__joHeroReady = true;
+      if (onReady) onReady();
+    }
+  };
+
   return (
     <div className={"hero-slide" + (active ? " active" : "")}>
       <video
@@ -34,8 +41,8 @@ function HeroSlide({ slot, i, active, onReady }) {
         loop
         playsInline
         preload="auto"
-        onLoadedData={() => { if (i === 0 && onReady) onReady(); }}
-        onCanPlay={() => { if (i === 0 && onReady) onReady(); }}
+        onLoadedData={handleReady}
+        onCanPlay={handleReady}
       />
     </div>
   );

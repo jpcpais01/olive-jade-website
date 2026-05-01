@@ -1,0 +1,87 @@
+/* ========== Site loader — Atelier Seal ==========
+   Inlined experience: ivory ground, wordmark mask-reveal,
+   hairline meter draws across, mono caption fades in.
+   Self-dismisses at 2.0s. Shows on every fresh page enter. */
+
+#jo-loader {
+  position: fixed; inset: 0;
+  z-index: 9999;
+  background: #F2EFE8;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 56px;
+  pointer-events: auto;
+  transition: opacity .8s cubic-bezier(.4,0,.2,1), transform .9s cubic-bezier(.6,0,.2,1);
+  will-change: opacity, transform;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  color: #1A1A1A;
+}
+#jo-loader.gone { opacity: 0; transform: translateY(-2%); pointer-events: none; }
+
+/* Top mark — small mono */
+#jo-loader .jol-eyebrow {
+  position: absolute; top: 32px; left: 50%; transform: translateX(-50%);
+  display: inline-flex; align-items: center; gap: 12px;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase;
+  color: #8A867D;
+  opacity: 0;
+  animation: jolFadeIn .9s ease forwards .2s;
+}
+#jo-loader .jol-eyebrow-dot { width: 5px; height: 5px; background: #5C7A6B; border-radius: 50%; display: inline-block; }
+
+/* Wordmark */
+#jo-loader .jol-mark {
+  font-size: clamp(56px, 8vw, 128px);
+  line-height: 0.95;
+  letter-spacing: -0.025em;
+  font-weight: 400;
+  text-align: center;
+}
+#jo-loader .jol-line { display: block; overflow: hidden; }
+#jo-loader .jol-line > span {
+  display: inline-block;
+  transform: translateY(102%);
+  animation: jolRise 1.05s cubic-bezier(.2,.7,.2,1) forwards;
+}
+#jo-loader .jol-line.l1 > span { animation-delay: .15s; }
+#jo-loader .jol-line.l2 > span { animation-delay: .35s; }
+#jo-loader .jol-amp { font-style: italic; color: #5C7A6B; }
+
+/* Hairline meter */
+#jo-loader .jol-meter {
+  position: relative;
+  width: min(420px, 60vw);
+  height: 1px;
+  background: rgba(26,26,26,0.10);
+  overflow: hidden;
+}
+#jo-loader .jol-meter::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: #1A1A1A;
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: jolDraw 1.6s cubic-bezier(.55,0,.2,1) forwards .25s;
+}
+
+/* Bottom caption */
+#jo-loader .jol-foot {
+  position: absolute; bottom: 36px; left: 0; right: 0;
+  display: flex; justify-content: center; gap: 18px;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 9.5px; letter-spacing: 0.28em; text-transform: uppercase;
+  color: #8A867D;
+  opacity: 0;
+  animation: jolFadeIn 1s ease forwards .6s;
+}
+#jo-loader .jol-foot-sep { display: inline-block; width: 1px; background: rgba(26,26,26,0.18); }
+
+@keyframes jolRise { to { transform: translateY(0); } }
+@keyframes jolDraw { to { transform: scaleX(1); } }
+@keyframes jolFadeIn { to { opacity: 1; } }
+
+/* Reduced motion: just fade */
+@media (prefers-reduced-motion: reduce) {
+  #jo-loader .jol-line > span { transform: none; animation: jolFadeIn .4s ease forwards; }
+  #jo-loader .jol-meter::after { animation: jolFadeIn .4s ease forwards; transform: scaleX(1); }
+}

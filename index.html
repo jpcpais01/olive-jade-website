@@ -9,8 +9,32 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles.css" />
 <link rel="stylesheet" href="home.css" />
+<link rel="stylesheet" href="loader.css" />
 </head>
 <body>
+<div id="jo-loader" aria-hidden="true">
+  <div class="jol-eyebrow"><span class="jol-eyebrow-dot"></span><span>Maison · Spring · MMXXVI</span></div>
+  <div class="jol-mark">
+    <span class="jol-line l1"><span>Jade</span></span>
+    <span class="jol-line l2"><span><em class="jol-amp">&amp;</em> Olive</span></span>
+  </div>
+  <div class="jol-meter"></div>
+  <div class="jol-foot">
+    <span>Athens</span><span class="jol-foot-sep">&nbsp;</span>
+    <span>Kyoto</span><span class="jol-foot-sep">&nbsp;</span>
+    <span>Lisbon</span>
+  </div>
+</div>
+<script>
+  (function() {
+    var loader = document.getElementById('jo-loader');
+    if (!loader) return;
+    setTimeout(function() {
+      loader.classList.add('gone');
+      setTimeout(function() { loader.parentNode && loader.parentNode.removeChild(loader); }, 900);
+    }, 2000);
+  })();
+</script>
 <div id="root"></div>
 
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>

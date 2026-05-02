@@ -2,9 +2,9 @@
 const { useState, useEffect, useRef } = React;
 
 const HERO_SLOTS = [
-  { src: "videos/hero_1.mp4", caption: "N°01 — Aegean Light, Naxos" },
+  { src: "videos/hero_3.mp4", caption: "N°01 — White Stone, Cyclades" },
   { src: "videos/hero_2.mp4", caption: "N°02 — Olive Grove, Crete" },
-  { src: "videos/hero_3.mp4", caption: "N°03 — White Stone, Cyclades" },
+  { src: "videos/hero_1.mp4", caption: "N°03 — Aegean Light, Naxos" },
 ];
 
 // ─── HERO ───────────────────────────────────────────────────────

@@ -189,7 +189,7 @@ function CollectionShowcase() {
 
 // ─── Four Seas — sticky-stack cinematic tableau ──────────────────
 const SEAS = [
-  { n: "I",  name: "Mediterranean", place: "Naxos · 37.10°N",    line: "White stone & olive",     body: "The white quiet of a Cycladic noon. Limewashed walls, sun-warmed marble, gold the colour of dry grass.",       img: "https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?auto=format&fit=crop&w=1800&q=85", accent: "#C9B68F" },
+  { n: "I",  name: "Mediterranean", place: "Naxos · 37.10°N",    line: "White stone & olive",     body: "The white quiet of a Cycladic noon. Limewashed walls, sun-warmed marble, gold the colour of dry grass.",       video: "videos/sea_med.mp4", accent: "#C9B68F" },
   { n: "II", name: "Sea of Japan",  place: "Kyoto · 35.01°N",    line: "Linen, silk & restraint", body: "A coast of mist and pine. Jewellery worn the way a kimono is folded — quietly, precisely, without occasion.", img: "https://images.unsplash.com/photo-1545569310-1f9e0f95b6da?auto=format&fit=crop&w=1800&q=85", accent: "#8C6F5C" },
 ];
 
@@ -223,7 +223,9 @@ function TwoSeas() {
         <div className="fs-stage">
           {SEAS.map((s, i) => (
             <div key={s.name} className={"fs-bg" + (i === active ? " active" : "")}>
-              <img src={s.img} alt="" loading="lazy" />
+              {s.video
+                ? <video src={s.video} autoPlay muted loop playsInline />
+                : <img src={s.img} alt="" loading="lazy" />}
             </div>
           ))}
           <div className="fs-bg-veil" />

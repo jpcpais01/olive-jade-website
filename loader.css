@@ -6,15 +6,38 @@
 #jo-loader {
   position: fixed; inset: 0;
   z-index: 9999;
-  background: #F2EFE8;
+  background: #0d0d0b;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 56px;
   pointer-events: auto;
   transition: opacity .8s cubic-bezier(.4,0,.2,1), transform .9s cubic-bezier(.6,0,.2,1);
   will-change: opacity, transform;
   font-family: "Cormorant Garamond", Georgia, serif;
-  color: #1A1A1A;
+  color: #F2EFE8;
+  overflow: hidden;
 }
+
+/* Video background */
+#jo-loader .jol-video {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0.55;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Darken overlay so text stays legible */
+#jo-loader::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(13,13,11,0.45) 0%, rgba(13,13,11,0.25) 50%, rgba(13,13,11,0.55) 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* All direct children sit above video */
+#jo-loader > *:not(.jol-video) { position: relative; z-index: 2; }
 #jo-loader.gone { opacity: 0; transform: translateY(-2%); pointer-events: none; }
 
 /* Top mark — small mono */
@@ -23,7 +46,7 @@
   display: inline-flex; align-items: center; gap: 12px;
   font-family: "JetBrains Mono", ui-monospace, monospace;
   font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase;
-  color: #8A867D;
+  color: rgba(242,239,232,0.65);
   opacity: 0;
   animation: jolFadeIn .9s ease forwards .2s;
 }
@@ -52,13 +75,13 @@
   position: relative;
   width: min(420px, 60vw);
   height: 1px;
-  background: rgba(26,26,26,0.10);
+  background: rgba(242,239,232,0.18);
   overflow: hidden;
 }
 #jo-loader .jol-meter::after {
   content: "";
   position: absolute; inset: 0;
-  background: #1A1A1A;
+  background: #F2EFE8;
   transform: scaleX(0);
   transform-origin: left center;
   animation: jolDraw 1.6s cubic-bezier(.55,0,.2,1) forwards .25s;
@@ -70,7 +93,7 @@
   display: flex; justify-content: center; gap: 18px;
   font-family: "JetBrains Mono", ui-monospace, monospace;
   font-size: 9.5px; letter-spacing: 0.28em; text-transform: uppercase;
-  color: #8A867D;
+  color: rgba(242,239,232,0.55);
   opacity: 0;
   animation: jolFadeIn 1s ease forwards .6s;
 }

@@ -190,7 +190,7 @@ function CollectionShowcase() {
 // ─── Four Seas — sticky-stack cinematic tableau ──────────────────
 const SEAS = [
   { n: "I",  name: "Mediterranean", place: "Naxos · 37.10°N",    line: "White stone & olive",     body: "The white quiet of a Cycladic noon. Limewashed walls, sun-warmed marble, gold the colour of dry grass.",       video: "videos/sea_med.mp4", accent: "#C9B68F" },
-  { n: "II", name: "Sea of Japan",  place: "Kyoto · 35.01°N",    line: "Linen, silk & restraint", body: "A coast of mist and pine. Jewellery worn the way a kimono is folded — quietly, precisely, without occasion.", img: "https://images.unsplash.com/photo-1545569310-1f9e0f95b6da?auto=format&fit=crop&w=1800&q=85", accent: "#8C6F5C" },
+  { n: "II", name: "Sea of Japan",  place: "Kyoto · 35.01°N",    line: "Linen, silk & restraint", body: "A coast of mist and pine. Jewellery worn the way a kimono is folded — quietly, precisely, without occasion.", video: "videos/sea_japan.mp4", accent: "#8C6F5C" },
 ];
 
 function TwoSeas() {
@@ -215,6 +215,33 @@ function TwoSeas() {
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => { window.removeEventListener("scroll", onScroll); cancelAnimationFrame(raf); };
+  }, []);
+
+  // Auto-advance: 5 s after section enters view, scroll to next sea
+  useEffect(() => {
+    const wrap = wrapRef.current; if (!wrap) return;
+    let timer = null;
+    let interval = null;
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        timer = setTimeout(() => {
+          // Start cycling every 5 s
+          let idx = 0;
+          interval = setInterval(() => {
+            idx = (idx + 1) % SEAS.length;
+            const total = wrap.offsetHeight - window.innerHeight;
+            const docTop = wrap.getBoundingClientRect().top + window.scrollY;
+            const p = idx === 0 ? 0.05 : (idx / SEAS.length) + 0.05;
+            window.scrollTo({ top: docTop + p * total, behavior: 'smooth' });
+          }, 5000);
+        }, 5000);
+      } else {
+        clearTimeout(timer);
+        clearInterval(interval);
+      }
+    }, { threshold: 0.6 });
+    io.observe(wrap);
+    return () => { io.disconnect(); clearTimeout(timer); clearInterval(interval); };
   }, []);
 
   return (

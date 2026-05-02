@@ -983,18 +983,23 @@ body.sea-cursor-on, body.sea-cursor-on a, body.sea-cursor-on button { cursor: no
 /* Center content panel */
 .four-seas .fs-content {
   position: absolute; inset: 0;
-  display: grid; align-items: center; justify-items: center;
-  padding: 0 var(--pad-x);
   z-index: 3;
 }
 .four-seas .fs-panel {
-  grid-row: 1; grid-column: 1;
-  width: 100%; max-width: 800px; text-align: center;
-  opacity: 0; transform: translateY(30px);
+  position: absolute;
+  top: 55%; left: 50%;
+  transform: translateX(-50%) translateY(calc(-50% + 30px));
+  width: min(800px, calc(100% - 2 * var(--pad-x)));
+  text-align: center;
+  opacity: 0;
   transition: opacity 1.2s cubic-bezier(.4,0,.2,1), transform 1.2s cubic-bezier(.2,.7,.2,1);
   pointer-events: none;
 }
-.four-seas .fs-panel.active { opacity: 1; transform: none; pointer-events: auto; }
+.four-seas .fs-panel.active {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-50%);
+  pointer-events: auto;
+}
 .four-seas .fs-panel-num {
   font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.36em; text-transform: uppercase;
   color: var(--accent, #F2EDE0); margin-bottom: 24px;
@@ -1005,9 +1010,10 @@ body.sea-cursor-on, body.sea-cursor-on a, body.sea-cursor-on button { cursor: no
 }
 .four-seas .fs-panel-name {
   font-family: var(--serif); font-weight: 400;
-  font-size: clamp(72px, 12vw, 200px);
+  font-size: clamp(50px, 8.4vw, 140px);
   line-height: 0.92; letter-spacing: -0.028em;
   color: #F8F2E0;
+  white-space: nowrap;
   margin-bottom: 36px;
 }
 .four-seas .fs-panel-name span { display: inline-block; }
@@ -1041,6 +1047,6 @@ body.sea-cursor-on, body.sea-cursor-on a, body.sea-cursor-on button { cursor: no
   .four-seas .fs-content { position: relative; inset: auto; padding: 60px var(--pad-x); display: block; }
   .four-seas .fs-panel { position: relative; opacity: 1; transform: none; padding: 80px 0; border-bottom: 1px solid rgba(242,237,224,0.18); }
   .four-seas .fs-panel:last-child { border-bottom: none; }
-  .four-seas .fs-panel-name { font-size: clamp(56px, 14vw, 100px); }
+  .four-seas .fs-panel-name { font-size: clamp(36px, 9.8vw, 70px); white-space: normal; }
   .four-seas .fs-foot { position: relative; padding: 24px var(--pad-x) 60px; bottom: auto; left: auto; right: auto; }
 }

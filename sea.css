@@ -103,6 +103,7 @@ body.sea-cursor-on, body.sea-cursor-on a, body.sea-cursor-on button { cursor: no
   position: absolute; inset: 0;
   width: 100%; height: 100%; object-fit: cover; display: block;
   background: var(--sea-deep);
+  transform: scale(1.08);
 }
 .sea-hero-slide .sea-hero-img { background-size: cover; background-position: center; }
 

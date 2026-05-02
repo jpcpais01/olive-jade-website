@@ -494,23 +494,37 @@ const INSPIRATIONS = [
   {
     city: "Lisbon", country: "Portugal", coords: "38.72°N · 9.14°W",
     headline: "Atlantic Gold", sub: "Where the Tagus meets the open sea",
-    body: "River silver worked cold in Alfama workshops. Sun-worn gold the colour of late afternoon on limestone. The house keeps its Lisbon studio small — its silversmith older than the trade.",
+    body: "River silver worked cold in Alfama workshops. Sun-worn gold the colour of late afternoon on limestone — the house keeps its Lisbon studio small.",
     note: "N°01", sea: "Atlantic", material: "River Silver · Hammered Gold",
-    x: 160, y: 155,
+    x: 75, y: 132,
+  },
+  {
+    city: "Valencia", country: "Spain", coords: "39.47°N · 0.37°W",
+    headline: "Levantine Sun", sub: "Orange light on warm stone",
+    body: "A city that faces the sea and the plain in equal measure. Gold worn loose, hammered flat, warm as saffron at midday.",
+    note: "N°02", sea: "Levantine", material: "Hammered Gold · Carnelian",
+    x: 305, y: 94,
+  },
+  {
+    city: "Positano", country: "Italy", coords: "40.63°N · 14.49°E",
+    headline: "Amalfi Terrace", sub: "Lemon groves above the sea",
+    body: "Cliffside colour, vertical gardens, the sound of boats below. A jewel from here is worn the way a scarf is tied — once, effortlessly.",
+    note: "N°03", sea: "Tyrrhenian", material: "Gold Leaf · Coral",
+    x: 570, y: 72,
   },
   {
     city: "Mykonos", country: "Greece", coords: "37.45°N · 25.33°E",
     headline: "Aegean Stone", sub: "White stone under a vertical sun",
-    body: "Cycladic noon: limewashed walls, heat on marble, a hum that is almost silence. Gold thin as light. Pieces worn to the harbour, left in a bowl on the bedside table — always ready.",
-    note: "N°02", sea: "Aegean", material: "Cycladic Stone · Yellow Gold",
-    x: 600, y: 72,
+    body: "Cycladic noon: limewashed walls, heat on marble, a hum that is almost silence. Gold thin as light, worn to the harbour.",
+    note: "N°04", sea: "Aegean", material: "Cycladic Stone · Yellow Gold",
+    x: 830, y: 82,
   },
   {
     city: "Antalya", country: "Turkey", coords: "36.87°N · 30.71°E",
     headline: "Taurus Light", sub: "Ancient harbour on the Levant coast",
-    body: "Bronze and beaten gold — the weight of caravan roads and deep harbours. A jewel from here is worn the way a remark is made: with intention, and then left alone to be heard.",
-    note: "N°03", sea: "Levant", material: "Bronze · Beaten Gold",
-    x: 1040, y: 95,
+    body: "Bronze and beaten gold — the weight of caravan roads and deep harbours. Worn with intention, then left alone to be heard.",
+    note: "N°05", sea: "Levant", material: "Bronze · Beaten Gold",
+    x: 1090, y: 100,
   },
 ];
 
@@ -529,19 +543,19 @@ function Inspirations() {
   }, []);
 
   const loc = INSPIRATIONS[active];
-  // Smooth bezier through Lisbon → Mykonos → Antalya
-  const curve = "M 160,155 C 340,150 480,58 600,72 C 720,86 900,91 1040,95";
+  // Smooth bezier through all 5 cities west → east
+  const curve = "M 75,132 C 165,128 238,90 305,94 C 385,99 482,65 570,72 C 652,79 752,81 830,82 C 918,84 1022,97 1090,100";
 
   return (
     <section className={`inspo${visible ? " in" : ""}`} ref={sectionRef}>
       <div className="inspo-hd">
         <div className="inspo-eyebrow"><span className="inspo-eb-line" /><span>IV · Inspirations</span></div>
-        <h2 className="inspo-title">Drawn from <em>three coasts.</em></h2>
+        <h2 className="inspo-title">Drawn from <em>five coasts.</em></h2>
       </div>
 
       {/* ── Route SVG ── */}
       <div className="inspo-route-wrap">
-        <svg className="inspo-route" viewBox="0 0 1200 220" preserveAspectRatio="xMidYMid meet">
+        <svg className="inspo-route" viewBox="0 0 1200 175" preserveAspectRatio="xMidYMid meet">
           {/* The single curved path */}
           <path d={curve} fill="none" stroke="var(--hairline)" strokeWidth="1" />
 
@@ -550,34 +564,35 @@ function Inspirations() {
             const on = i === active;
             return (
               <g key={l.city} className="inspo-pin" onClick={() => setActive(i)} style={{ cursor: "pointer" }}>
-                {/* Label above */}
-                <text x={l.x} y={l.y - 38} textAnchor="middle"
+                {/* City name above dot */}
+                <text x={l.x} y={l.y - 28} textAnchor="middle"
                   fill={on ? "var(--ink)" : "var(--muted)"}
-                  fontSize="15" fontFamily="Cormorant Garamond,Georgia,serif"
+                  fontSize="12" fontFamily="Cormorant Garamond,Georgia,serif"
                   fontStyle="italic" letterSpacing="-0.2"
                   style={{ transition: "fill .35s ease" }}
                 >{l.city}</text>
-                <text x={l.x} y={l.y - 22} textAnchor="middle"
+                {/* Country */}
+                <text x={l.x} y={l.y - 15} textAnchor="middle"
                   fill={on ? "var(--muted)" : "var(--hairline)"}
-                  fontSize="8.5" fontFamily="JetBrains Mono,monospace"
+                  fontSize="7.5" fontFamily="JetBrains Mono,monospace"
                   letterSpacing="2" style={{ transition: "fill .35s ease" }}
                 >{l.country.toUpperCase()}</text>
 
-                {/* Outer ring — active only */}
-                <circle cx={l.x} cy={l.y} r="10" fill="none"
+                {/* Ring — active only */}
+                <circle cx={l.x} cy={l.y} r="9" fill="none"
                   stroke={on ? "var(--jade)" : "transparent"}
-                  strokeWidth="0.7" opacity="0.35"
+                  strokeWidth="0.7" opacity="0.38"
                 />
                 {/* Dot */}
-                <circle cx={l.x} cy={l.y} r={on ? 4 : 3}
+                <circle cx={l.x} cy={l.y} r={on ? 3.5 : 2.5}
                   fill={on ? "var(--jade)" : "var(--hairline)"}
-                  style={{ transition: "fill .35s ease, r .35s ease" }}
+                  style={{ transition: "fill .35s ease" }}
                 />
 
-                {/* Coords below — always present, fade in/out */}
-                <text x={l.x} y={l.y + 20} textAnchor="middle"
+                {/* Coords below — fade in when active */}
+                <text x={l.x} y={l.y + 17} textAnchor="middle"
                   fill={on ? "var(--muted)" : "transparent"}
-                  fontSize="8" fontFamily="JetBrains Mono,monospace"
+                  fontSize="7.5" fontFamily="JetBrains Mono,monospace"
                   letterSpacing="0.8" style={{ transition: "fill .35s ease" }}
                 >{l.coords}</text>
               </g>

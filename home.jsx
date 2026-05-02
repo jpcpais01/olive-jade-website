@@ -12,13 +12,13 @@ function SeaHeroSlide({ slot, i, active, onReady }) {
   const videoRef = useRef(null);
   useEffect(() => {
     const v = videoRef.current; if (!v) return;
-    if (active) { try { v.currentTime = 0; } catch(e){}; const p = v.play(); if (p && p.catch) p.catch(() => {}); }
-    else v.pause();
+    if (active) { try { v.currentTime = 0; } catch(e){} }
+    const p = v.play(); if (p && p.catch) p.catch(() => {});
   }, [active]);
   const handleReady = () => { if (i === 0) { window.__joHeroReady = true; if (onReady) onReady(); } };
   return (
     <div className={"sea-hero-slide" + (active ? " active" : "")}>
-      <video ref={videoRef} src={slot.src} autoPlay={active} muted loop playsInline preload="auto" onLoadedData={handleReady} onCanPlay={handleReady} />
+      <video ref={videoRef} src={slot.src} autoPlay muted loop playsInline preload="auto" onLoadedData={handleReady} onCanPlay={handleReady} />
     </div>
   );
 }

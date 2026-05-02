@@ -152,43 +152,81 @@ function Nav({ current = "home", onNav, onOpenCart }) {
 function Footer() {
   return (
     <footer className="footer">
-      <div className="footer-grid">
-        <div>
-          <div className="footer-mark">Jade<br/><em>&amp; Olive</em></div>
-          <p className="footer-tag">A quiet house. Made between Athens and Kyoto in numbered editions — worn for the long while.</p>
+
+      {/* ── Brand band ── */}
+      <div className="footer-brand">
+        <div className="footer-mark">
+          <span>Jade</span>
+          <em>&amp; Olive</em>
         </div>
-        <div>
-          <h4>Maison</h4>
+        <div className="footer-brand-right">
+          <div className="footer-coords">
+            <span>Athens · 37.98°N · 23.73°E</span>
+            <span className="footer-coords-sep">⟷</span>
+            <span>Kyoto · 35.01°N · 135.76°E</span>
+          </div>
+          <p className="footer-tag">A quiet house. Made between two seas in numbered editions — worn for the long while.</p>
+        </div>
+      </div>
+
+      <div className="footer-rule" />
+
+      {/* ── Nav grid ── */}
+      <div className="footer-nav">
+
+        <div className="footer-col">
+          <h4 className="footer-col-hd">Collections</h4>
           <ul>
-            <li><a href="shop.html">The Collection</a></li>
+            <li><a href="shop.html">Shop All</a></li>
+            <li><a href="shop.html?season=spring">Spring Edition · MMXXVI</a></li>
+            <li><a href="shop.html?season=summer">Summer Edition · MMXXVI</a></li>
             <li><a href="shop.html?cat=necklaces">Necklaces</a></li>
             <li><a href="shop.html?cat=earrings">Earrings</a></li>
             <li><a href="shop.html?cat=rings">Rings</a></li>
             <li><a href="shop.html?cat=bracelets">Bracelets</a></li>
           </ul>
         </div>
-        <div>
-          <h4>About us</h4>
+
+        <div className="footer-col">
+          <h4 className="footer-col-hd">The House</h4>
           <ul>
-            <li><a href="about.html">The House</a></li>
-            <li><a href="#">Materials</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="about.html#atelier">The Atelier</a></li>
+            <li><a href="about.html#materials">Materials</a></li>
+            <li><a href="about.html#lookbook">Lookbook</a></li>
             <li><a href="#">Care &amp; Repair</a></li>
             <li><a href="#">Press</a></li>
           </ul>
         </div>
-        <div>
-          <h4>Correspondence</h4>
-          <p style={{ fontSize: 13, color: "var(--ink-soft)", marginBottom: 22, lineHeight: 1.7, maxWidth: 280 }}>A letter, four times a year. New pieces, where they came from.</p>
-          <form className="newsletter" onSubmit={(e) => { e.preventDefault(); alert("Subscribed (demo)"); }}>
-            <input placeholder="Email address" type="email" required />
-            <button type="submit">Send →</button>
+
+        <div className="footer-col footer-col-news">
+          <h4 className="footer-col-hd">Correspondence</h4>
+          <p className="footer-news-body">A letter, four times a year. New pieces, where they came from, and how they were made.</p>
+          <form className="footer-form" onSubmit={(e) => e.preventDefault()}>
+            <input placeholder="Your email address" type="email" required />
+            <button type="submit" aria-label="Subscribe"><Icon.Arrow /></button>
           </form>
+          <div className="footer-socials">
+            <a href="#">Instagram</a>
+            <span className="footer-soc-sep">·</span>
+            <a href="#">Pinterest</a>
+          </div>
         </div>
+
       </div>
+
+      {/* ── Bottom bar ── */}
       <div className="footer-bottom">
         <span>© MMXXVI · Maison Jade &amp; Olive</span>
-        <span>Athens · Kyoto · Lisbon · Florence</span>
+        <div className="footer-cities">
+          <span>Athens</span><span className="footer-city-dot"/>
+          <span>Kyoto</span><span className="footer-city-dot"/>
+          <span>Lisbon</span><span className="footer-city-dot"/>
+          <span>Florence</span>
+        </div>
+        <span>Quietly made.</span>
       </div>
+
     </footer>
   );
 }

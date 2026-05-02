@@ -496,21 +496,21 @@ const INSPIRATIONS = [
     headline: "Atlantic Gold", sub: "Where the Tagus meets the open sea",
     body: "River silver worked cold in Alfama workshops. Sun-worn gold the colour of late afternoon on limestone. The house keeps its Lisbon studio small — its silversmith older than the trade.",
     note: "N°01", sea: "Atlantic", material: "River Silver · Hammered Gold",
-    mx: 124, my: 218,
+    x: 160, y: 155,
   },
   {
     city: "Mykonos", country: "Greece", coords: "37.45°N · 25.33°E",
     headline: "Aegean Stone", sub: "White stone under a vertical sun",
     body: "Cycladic noon: limewashed walls, heat on marble, a hum that is almost silence. Gold thin as light. Pieces worn to the harbour, left in a bowl on the bedside table — always ready.",
     note: "N°02", sea: "Aegean", material: "Cycladic Stone · Yellow Gold",
-    mx: 607, my: 239,
+    x: 600, y: 72,
   },
   {
     city: "Antalya", country: "Turkey", coords: "36.87°N · 30.71°E",
     headline: "Taurus Light", sub: "Ancient harbour on the Levant coast",
     body: "Bronze and beaten gold — the weight of caravan roads and deep harbours. A jewel from here is worn the way a remark is made: with intention, and then left alone to be heard.",
     note: "N°03", sea: "Levant", material: "Bronze · Beaten Gold",
-    mx: 682, my: 249,
+    x: 1040, y: 95,
   },
 ];
 
@@ -529,8 +529,8 @@ function Inspirations() {
   }, []);
 
   const loc = INSPIRATIONS[active];
-  const VW = 840, VH = 460;
-  const routeD = `M ${INSPIRATIONS[0].mx},${INSPIRATIONS[0].my} C 280,226 460,233 ${INSPIRATIONS[1].mx},${INSPIRATIONS[1].my} C ${INSPIRATIONS[1].mx+28},${INSPIRATIONS[1].my+1} ${INSPIRATIONS[2].mx-28},${INSPIRATIONS[2].my-1} ${INSPIRATIONS[2].mx},${INSPIRATIONS[2].my}`;
+  // Smooth bezier through Lisbon → Mykonos → Antalya
+  const curve = "M 160,155 C 340,150 480,58 600,72 C 720,86 900,91 1040,95";
 
   return (
     <section className={`inspo${visible ? " in" : ""}`} ref={sectionRef}>
@@ -539,123 +539,63 @@ function Inspirations() {
         <h2 className="inspo-title">Drawn from <em>three coasts.</em></h2>
       </div>
 
-      <div className="inspo-layout">
-        {/* ── Map column ── */}
-        <div className="inspo-map-col">
-          <div className="inspo-map-frame">
-            <svg className="inspo-map" viewBox={`0 0 ${VW} ${VH}`} preserveAspectRatio="xMidYMid meet">
-              <defs>
-                <radialGradient id="inspo-sea" cx="55%" cy="55%" r="65%">
-                  <stop offset="0%" stopColor="#0f1b16" />
-                  <stop offset="100%" stopColor="#060d0a" />
-                </radialGradient>
-                <filter id="inspo-glow-sm" x="-80%" y="-80%" width="260%" height="260%">
-                  <feGaussianBlur stdDeviation="2.5" result="b" />
-                  <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-                </filter>
-              </defs>
+      {/* ── Route SVG ── */}
+      <div className="inspo-route-wrap">
+        <svg className="inspo-route" viewBox="0 0 1200 220" preserveAspectRatio="xMidYMid meet">
+          {/* The single curved path */}
+          <path d={curve} fill="none" stroke="var(--hairline)" strokeWidth="1" />
 
-              {/* Sea */}
-              <rect width={VW} height={VH} fill="url(#inspo-sea)" />
+          {/* City markers */}
+          {INSPIRATIONS.map((l, i) => {
+            const on = i === active;
+            return (
+              <g key={l.city} className="inspo-pin" onClick={() => setActive(i)} style={{ cursor: "pointer" }}>
+                {/* Label above */}
+                <text x={l.x} y={l.y - 38} textAnchor="middle"
+                  fill={on ? "var(--ink)" : "var(--muted)"}
+                  fontSize="15" fontFamily="Cormorant Garamond,Georgia,serif"
+                  fontStyle="italic" letterSpacing="-0.2"
+                  style={{ transition: "fill .35s ease" }}
+                >{l.city}</text>
+                <text x={l.x} y={l.y - 22} textAnchor="middle"
+                  fill={on ? "var(--muted)" : "var(--hairline)"}
+                  fontSize="8.5" fontFamily="JetBrains Mono,monospace"
+                  letterSpacing="2" style={{ transition: "fill .35s ease" }}
+                >{l.country.toUpperCase()}</text>
 
-              {/* Graticule — latitude */}
-              {[[33,"50°N"],[115,"45°N"],[197,"40°N"],[279,"35°N"],[361,"30°N"]].map(([y,lbl]) => (
-                <g key={lbl}>
-                  <line x1="0" y1={y} x2={VW} y2={y} stroke="rgba(201,182,143,0.07)" strokeWidth="1" />
-                  <text x="6" y={y-4} fill="rgba(201,182,143,0.25)" fontSize="8" fontFamily="JetBrains Mono,monospace" letterSpacing="1">{lbl}</text>
-                </g>
-              ))}
-              {/* Graticule — longitude */}
-              {[[112,"-10°"],[252,"0°"],[392,"10°"],[532,"20°"],[672,"30°"]].map(([x,lbl]) => (
-                <g key={lbl}>
-                  <line x1={x} y1="0" x2={x} y2={VH} stroke="rgba(201,182,143,0.07)" strokeWidth="1" />
-                  <text x={x+3} y={VH-5} fill="rgba(201,182,143,0.25)" fontSize="8" fontFamily="JetBrains Mono,monospace" letterSpacing="1">{lbl}</text>
-                </g>
-              ))}
+                {/* Outer ring — active only */}
+                <circle cx={l.x} cy={l.y} r="10" fill="none"
+                  stroke={on ? "var(--jade)" : "transparent"}
+                  strokeWidth="0.7" opacity="0.35"
+                />
+                {/* Dot */}
+                <circle cx={l.x} cy={l.y} r={on ? 4 : 3}
+                  fill={on ? "var(--jade)" : "var(--hairline)"}
+                  style={{ transition: "fill .35s ease, r .35s ease" }}
+                />
 
-              {/* Europe land */}
-              <path
-                d="M 0,0 L 840,0 L 840,245 C 822,247 806,250 790,251 C 772,252 756,252 740,252 C 725,252 712,250 700,250 C 690,250 684,249 682,249 C 672,249 663,252 650,258 C 638,264 626,266 614,265 C 600,263 592,254 583,242 C 574,230 568,220 560,218 C 552,216 545,207 536,210 C 527,213 518,200 508,200 C 498,200 490,210 480,204 C 470,198 461,194 450,194 C 440,194 430,182 420,174 C 410,166 394,163 378,156 C 362,149 348,147 332,148 C 316,149 300,153 282,157 C 264,161 248,172 234,196 C 220,220 216,252 218,268 C 200,265 180,260 158,254 C 146,252 124,218 116,206 C 108,194 100,176 93,152 C 86,128 84,106 84,88 L 0,72 Z"
-                fill="rgba(201,182,143,0.09)" stroke="rgba(201,182,143,0.18)" strokeWidth="0.7"
-              />
-              {/* Italy boot hint */}
-              <path d="M 422,172 C 428,185 436,202 444,222 C 451,240 458,252 452,256" fill="none" stroke="rgba(201,182,143,0.18)" strokeWidth="2.8" strokeLinecap="round" />
+                {/* Coords below — always present, fade in/out */}
+                <text x={l.x} y={l.y + 20} textAnchor="middle"
+                  fill={on ? "var(--muted)" : "transparent"}
+                  fontSize="8" fontFamily="JetBrains Mono,monospace"
+                  letterSpacing="0.8" style={{ transition: "fill .35s ease" }}
+                >{l.coords}</text>
+              </g>
+            );
+          })}
+        </svg>
+      </div>
 
-              {/* North Africa */}
-              <path
-                d="M 0,460 L 840,460 L 840,348 C 812,346 790,345 766,344 C 740,343 718,342 700,342 C 684,342 672,340 654,336 C 632,331 610,327 588,326 C 566,325 544,323 522,320 C 500,317 484,318 462,316 C 442,314 432,288 416,262 C 400,236 393,244 385,248 C 377,252 368,264 350,266 C 332,268 314,252 290,250 C 266,248 248,262 222,268 C 196,274 172,270 148,275 C 124,280 98,278 68,284 L 0,288 Z"
-                fill="rgba(201,182,143,0.09)" stroke="rgba(201,182,143,0.18)" strokeWidth="0.7"
-              />
-
-              {/* Islands */}
-              <ellipse cx="374" cy="205" rx="9" ry="20" fill="rgba(201,182,143,0.12)" stroke="rgba(201,182,143,0.2)" strokeWidth="0.6" />
-              <ellipse cx="367" cy="178" rx="6" ry="14" fill="rgba(201,182,143,0.12)" stroke="rgba(201,182,143,0.2)" strokeWidth="0.6" />
-              <ellipse cx="452" cy="258" rx="16" ry="9"  fill="rgba(201,182,143,0.12)" stroke="rgba(201,182,143,0.2)" strokeWidth="0.6" />
-              <ellipse cx="604" cy="276" rx="24" ry="9"  fill="rgba(201,182,143,0.12)" stroke="rgba(201,182,143,0.2)" strokeWidth="0.6" />
-              <ellipse cx="714" cy="274" rx="14" ry="8"  fill="rgba(201,182,143,0.12)" stroke="rgba(201,182,143,0.2)" strokeWidth="0.6" />
-
-              {/* Route */}
-              <path d={routeD} fill="none" stroke="rgba(201,182,143,0.22)" strokeWidth="0.9" strokeDasharray="4 8" />
-
-              {/* City markers */}
-              {INSPIRATIONS.map((l, i) => {
-                const on = i === active;
-                return (
-                  <g key={l.city} onClick={() => setActive(i)} style={{ cursor: "pointer" }}>
-                    {on && <circle cx={l.mx} cy={l.my} r="18" fill="none" stroke="rgba(122,171,148,0.3)" strokeWidth="1" className="inspo-pulse-ring" />}
-                    <circle cx={l.mx} cy={l.my} r="8" fill="none" stroke={on ? "rgba(122,171,148,0.6)" : "rgba(201,182,143,0.25)"} strokeWidth="0.8" />
-                    <circle cx={l.mx} cy={l.my} r={on ? 3.5 : 2.5}
-                      fill={on ? "#7aab94" : "rgba(201,182,143,0.5)"}
-                      filter={on ? "url(#inspo-glow-sm)" : ""}
-                    />
-                    <text
-                      x={l.mx + (i === 0 ? -14 : 14)} y={l.my - 17}
-                      textAnchor={i === 0 ? "end" : "start"}
-                      fill={on ? "rgba(242,239,232,0.9)" : "rgba(201,182,143,0.35)"}
-                      fontSize="9" fontFamily="JetBrains Mono,monospace" letterSpacing="1.8"
-                    >{l.city.toUpperCase()}</text>
-                    {on && (
-                      <text
-                        x={l.mx + (i === 0 ? -14 : 14)} y={l.my + 22}
-                        textAnchor={i === 0 ? "end" : "start"}
-                        fill="rgba(201,182,143,0.48)" fontSize="7.5"
-                        fontFamily="JetBrains Mono,monospace" letterSpacing="0.8"
-                      >{l.coords}</text>
-                    )}
-                  </g>
-                );
-              })}
-
-              <rect x="0.5" y="0.5" width={VW-1} height={VH-1} fill="none" stroke="rgba(201,182,143,0.1)" strokeWidth="1" />
-            </svg>
-          </div>
-
-          {/* City selector tabs */}
-          <div className="inspo-tabs">
-            {INSPIRATIONS.map((l, i) => (
-              <button key={l.city} className={`inspo-tab${i === active ? " active" : ""}`} onClick={() => setActive(i)}>
-                <span className="it-dot" />
-                <span className="it-city">{l.city}</span>
-                <span className="it-note">{l.note} · {l.sea}</span>
-              </button>
-            ))}
-          </div>
+      {/* ── Editorial text ── */}
+      <div className="inspo-body" key={active}>
+        <div className="inspo-left">
+          <div className="inspo-note">{loc.note} · {loc.sea}</div>
+          <h3 className="inspo-headline"><em>{loc.headline}</em></h3>
+          <div className="inspo-material">{loc.material}</div>
         </div>
-
-        {/* ── Editorial panel ── */}
-        <div className="inspo-panel" key={active}>
-          <div className="ip-note">{loc.note} · {loc.sea} Coast</div>
-          <div className="ip-city">{loc.city}</div>
-          <div className="ip-country">{loc.country}</div>
-          <div className="ip-coords">{loc.coords}</div>
-          <div className="ip-rule" />
-          <h3 className="ip-headline"><em>{loc.headline}</em></h3>
-          <p className="ip-sub">{loc.sub}</p>
-          <p className="ip-body">{loc.body}</p>
-          <div className="ip-material">
-            <span className="ipm-lbl">Materials</span>
-            <span className="ipm-val">{loc.material}</span>
-          </div>
+        <div className="inspo-right">
+          <p className="inspo-sub">{loc.sub}</p>
+          <p className="inspo-bodytext">{loc.body}</p>
         </div>
       </div>
     </section>

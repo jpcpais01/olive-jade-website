@@ -43,6 +43,11 @@
     function dismiss() {
       loader.classList.add('gone');
       setTimeout(function() { loader.parentNode && loader.parentNode.removeChild(loader); }, 900);
+      // Reveal custom scrollbar 1s after loader starts dismissing
+      setTimeout(function() {
+        var sb = document.getElementById('jo-scrollbar');
+        if (sb) sb.classList.add('visible');
+      }, 1000);
     }
     function tick() {
       var elapsed = performance.now() - t0;
@@ -51,6 +56,25 @@
       requestAnimationFrame(tick);
     }
     requestAnimationFrame(tick);
+  })();
+</script>
+<div id="jo-scrollbar" class="jo-scrollbar"><div class="jo-scrollbar-thumb"></div></div>
+<script>
+  (function() {
+    var thumb = document.querySelector('.jo-scrollbar-thumb');
+    function update() {
+      var doc = document.documentElement;
+      var scrollTop = window.scrollY || doc.scrollTop;
+      var scrollHeight = doc.scrollHeight - doc.clientHeight;
+      var viewH = doc.clientHeight;
+      var thumbH = Math.max(40, viewH * (viewH / doc.scrollHeight));
+      var thumbTop = scrollHeight > 0 ? (scrollTop / scrollHeight) * (viewH - thumbH) : 0;
+      thumb.style.height = thumbH + 'px';
+      thumb.style.top = thumbTop + 'px';
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
+    update();
   })();
 </script>
 <div id="root"></div>

@@ -23,6 +23,31 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { background: var(--bg); color: var(--ink); }
+
+/* Hide native scrollbar */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+
+/* Custom scrollbar */
+.jo-scrollbar {
+  position: fixed; top: 0; right: 0; bottom: 0;
+  width: 2px;
+  z-index: 9998;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .6s ease;
+}
+.jo-scrollbar.visible { opacity: 1; }
+.jo-scrollbar-thumb {
+  position: absolute;
+  right: 0;
+  width: 2px;
+  background: var(--jade);
+  opacity: 0.28;
+  border-radius: 1px;
+  transition: opacity .3s ease;
+  will-change: top, height;
+}
 html { scroll-behavior: smooth; }
 body {
   font-family: var(--sans);

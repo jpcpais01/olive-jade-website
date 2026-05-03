@@ -51,9 +51,6 @@
 
 /* ── Filter / sort bar ────────────────────────────────────────────── */
 .cf-bar {
-  position: sticky; top: 60px; z-index: 50;
-  background: rgba(248,245,239,0.96);
-  backdrop-filter: blur(18px) saturate(1.4);
   border-bottom: 1px solid var(--hairline);
 }
 .cf-bar-inner {
@@ -83,7 +80,6 @@
 .cf-sort:hover, .cf-sort select:hover { color: var(--ink); }
 
 @media (max-width: 980px) {
-  .cf-bar { top: 56px; }
   .cf-bar-inner { flex-wrap: wrap; gap: 0; }
   .cf-cats { overflow-x: auto; width: 100%; border-bottom: 1px solid var(--hairline); }
   .cf-sort { padding: 14px 0; }

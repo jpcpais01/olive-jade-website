@@ -1,77 +1,171 @@
 /* global React, ReactDOM */
-const { useState, useEffect } = React;
+const { useState, useEffect, useRef } = React;
 
-function ShopApp() {
+const CATS = [
+  { slug: "all",       label: "Everything"  },
+  { slug: "rings",     label: "Rings"       },
+  { slug: "necklaces", label: "Necklaces"   },
+  { slug: "earrings",  label: "Earrings"    },
+  { slug: "bracelets", label: "Bracelets"   },
+];
+
+// ─── Single product card ────────────────────────────────────────
+function CollectionItem({ p, index, featured }) {
+  return (
+    <a href={`product.html?id=${p.id}`} className={`ci${featured ? " ci-feat" : ""}`}>
+      <div className="ci-frame">
+        <img
+          src={p.images?.[0]}
+          alt={p.name}
+          loading={index < 6 ? "eager" : "lazy"}
+        />
+        <div className="ci-overlay">
+          <span className="ci-cta">View piece <window.Icon.Arrow size={11} /></span>
+        </div>
+        <div className="ci-num-tag">N°{String(index + 1).padStart(2, "0")}</div>
+      </div>
+      <div className="ci-meta">
+        <div className="ci-meta-top">
+          <span className="ci-name">{p.name}</span>
+          {p.price && <span className="ci-price">€ {p.price}</span>}
+        </div>
+        {p.category && <span className="ci-cat">{p.category}</span>}
+      </div>
+    </a>
+  );
+}
+
+// ─── Skeleton card ──────────────────────────────────────────────
+function Skeleton({ featured }) {
+  return <div className={`ci-skel${featured ? " ci-skel-feat" : ""}`} />;
+}
+
+// ─── App ────────────────────────────────────────────────────────
+function CollectionApp() {
   window.useReveal();
-  const [cartOpen, setCartOpen] = useState(false);
-  const [cat, setCat] = useState(() => new URLSearchParams(location.search).get("cat") || "all");
+  const [cat, setCat]       = useState(() => new URLSearchParams(location.search).get("cat") || "all");
+  const [sort, setSort]     = useState("default");
   const [products, setProducts] = useState(null);
-  const [cats, setCats] = useState([]);
+  const [cartOpen, setCartOpen] = useState(false);
+  const headRef = useRef(null);
 
-  useEffect(() => { window.ZendropAPI.listCategories().then(setCats); }, []);
+  // Scroll nav dark while header is visible
+  useEffect(() => {
+    const nav = document.querySelector(".nav");
+    if (!nav) return;
+    nav.classList.add("on-dark");
+    const onScroll = () => {
+      const r = headRef.current?.getBoundingClientRect();
+      if (!r) return;
+      if (r.bottom < 80) nav.classList.remove("on-dark");
+      else nav.classList.add("on-dark");
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => { window.removeEventListener("scroll", onScroll); nav.classList.remove("on-dark"); };
+  }, []);
+
   useEffect(() => {
     setProducts(null);
-    window.ZendropAPI.listProducts({ category: cat }).then(setProducts);
+    window.ZendropAPI.listProducts({ category: cat === "all" ? undefined : cat }).then(setProducts);
   }, [cat]);
+
+  const displayed = products
+    ? [...products].sort((a, b) => {
+        if (sort === "price-asc")  return (a.price || 0) - (b.price || 0);
+        if (sort === "price-desc") return (b.price || 0) - (a.price || 0);
+        return 0;
+      })
+    : null;
 
   return (
     <React.Fragment>
       <window.Nav current="shop" onOpenCart={() => setCartOpen(true)} />
       <main>
-        <window.InteriorHero
-          num="I / III"
-          kicker="The Collection · Spring MMXXVI"
-          title={<>
-            <span className="mask-reveal"><span>The full</span></span>
-            <span className="mask-reveal" style={{ display: "block" }}><span><em>collection.</em></span></span>
-          </>}
-          lede="Eight pieces from the spring drop. Each numbered, each made by hand between Athens and Kyoto. When a piece is gone, it returns the following season — never the same."
-          posterImg="https://images.unsplash.com/photo-1611652022419-a9419f74343d?auto=format&fit=crop&w=1800&q=85"
-        />
 
-        <div className="col-bar">
-          <div className="col-bar-inner">
-            <div className="col-cats">
-              {cats.map((c, i) => (
-                <button key={c.slug} className={cat === c.slug ? "active" : ""} onClick={() => setCat(c.slug)}>
-                  <span className="mono col-cat-num">{String(i + 1).padStart(2,"0")}</span>
-                  <span className="col-cat-label">{c.name}</span>
+        {/* ── Cinematic page header ── */}
+        <header className="ch" ref={headRef}>
+          <div className="ch-bg" />
+          <div className="ch-veil" />
+          <div className="ch-inner">
+            <div className="ch-top">
+              <span className="ch-eyebrow">Maison · MMXXVI · Athens &amp; Kyoto</span>
+            </div>
+            <div className="ch-body">
+              <h1 className="ch-title">The <em>Collection</em></h1>
+              <p className="ch-sub">Every piece numbered, every piece made by hand.<br/>When a piece leaves, it is repaired — never replaced.</p>
+            </div>
+            <div className="ch-foot">
+              <span className="ch-count">{displayed ? `${String(displayed.length).padStart(2, "0")} pieces available` : ""}</span>
+              <span className="ch-foot-sep" />
+              <span className="ch-coords">38.72°N · 9.13°W ⟷ 35.01°N · 135.76°E</span>
+            </div>
+          </div>
+        </header>
+
+        {/* ── Sticky filter / sort bar ── */}
+        <div className="cf-bar">
+          <div className="cf-bar-inner">
+            <nav className="cf-cats" aria-label="Filter by category">
+              {CATS.map((c, i) => (
+                <button
+                  key={c.slug}
+                  className={cat === c.slug ? "active" : ""}
+                  onClick={() => setCat(c.slug)}
+                >
+                  {i > 0 && <span className="cf-num">{String(i).padStart(2, "0")}</span>}
+                  <span className="cf-label">{c.label}</span>
                 </button>
               ))}
-            </div>
-            <div className="col-count mono">{products ? `${String(products.length).padStart(2,"0")} pieces · Spring · MMXXVI` : "Loading…"}</div>
+            </nav>
+            <label className="cf-sort">
+              <span>Sort</span>
+              <select value={sort} onChange={e => setSort(e.target.value)}>
+                <option value="default">Featured</option>
+                <option value="price-asc">Price ↑</option>
+                <option value="price-desc">Price ↓</option>
+              </select>
+            </label>
           </div>
         </div>
 
-        <section className="col-grid container reveal-stagger">
-          {products === null
-            ? Array.from({ length: 6 }).map((_, i) => <div key={i} className="col-skeleton" />)
-            : products.length === 0
-              ? <div style={{ gridColumn: "1 / -1", padding: 80, textAlign: "center", color: "var(--muted)", fontFamily: "var(--serif)", fontSize: 28, fontStyle: "italic" }}>Nothing here just yet.</div>
-              : products.map((p, i) => <window.ProductCard key={p.id} product={p} num={i+1} />)
+        {/* ── Product grid ── */}
+        <section className="cg">
+          {displayed === null
+            ? Array.from({ length: 7 }).map((_, i) => <Skeleton key={i} featured={i === 0} />)
+            : displayed.length === 0
+              ? <p className="cg-empty"><em>Nothing here just yet.</em></p>
+              : displayed.map((p, i) => (
+                  <CollectionItem
+                    key={p.id}
+                    p={p}
+                    index={i}
+                    featured={i === 0 && cat === "all"}
+                  />
+                ))
           }
         </section>
 
-        <section className="col-care reveal">
-          <div className="col-care-inner">
-            <span className="sh-num">A note on the house</span>
-            <p className="serif col-care-text">
-              Every piece is <em>numbered,</em> signed inside,<br/>
-              and <em>repaired forever</em> — sent back to the<br/>
+        {/* ── Closing mark ── */}
+        <div className="cc">
+          <div className="cc-stem" />
+          <div className="cc-body">
+            <div className="cc-mark">Jade<em>&amp; Olive</em></div>
+            <p className="cc-promise">
+              Every piece is <em>numbered,</em> signed inside,<br />
+              and <em>repaired forever</em> — sent back to the<br />
               hand that made it, for as long as it is worn.
             </p>
-            <div style={{ marginTop: 48, display: "flex", gap: 24, justifyContent: "center", flexWrap: "wrap" }}>
-              <a href="about.html" className="btn btn-ghost">About us <window.Icon.Arrow /></a>
-              <a href="#" className="hero-link" style={{ color: "var(--ink)", borderColor: "var(--hairline)" }}>Care &amp; repair <window.Icon.Arrow /></a>
-            </div>
+            <a href="about.html" className="btn-sand">The House <window.Icon.Arrow /></a>
           </div>
-        </section>
+          <div className="cc-stem" />
+        </div>
+
       </main>
       <window.Footer />
       <window.CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
-      <window.JoTweaks defaults={{ palette: "sage-ivory", heroVariant: "editorial" }} showHero={false} />
     </React.Fragment>
   );
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(<ShopApp />);
+ReactDOM.createRoot(document.getElementById("root")).render(<CollectionApp />);

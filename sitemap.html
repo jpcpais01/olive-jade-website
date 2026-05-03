@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Site Map — Jade & Olive</title>
+<title>Site Architecture — Jade & Olive</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -207,7 +207,7 @@
     <div class="sm-wordmark">Jade<br/><em>&amp; Olive</em></div>
     <div class="sm-header-right">
       Site Architecture · MMXXVI<br/>
-      4 pages · 9 components · 2 seas<br/>
+      3 main pages · 1 detail page · 9 components<br/>
       Athens · Kyoto
     </div>
   </header>
@@ -227,7 +227,7 @@
     </div>
   </div>
 
-  <!-- Pages -->
+  <!-- Pages (3 main + 1 detail) -->
   <div class="sm-pages">
 
     <!-- HOME -->
@@ -297,43 +297,46 @@
       </div>
     </div>
 
-    <!-- SHOP -->
+    <!-- COLLECTION -->
     <div class="sm-page page-shop">
       <div class="sm-page-header">
         <div class="sm-page-file">
           <span>shop.html</span>
           <a href="shop.html">shop.jsx</a>
         </div>
-        <div class="sm-page-title"><em>Shop</em></div>
+        <div class="sm-page-title">The <em>Collection</em></div>
       </div>
       <div class="sm-sections">
 
         <div class="sm-section">
           <span class="sm-section-num">—</span>
-          <span class="sm-section-name">Interior Hero</span>
+          <span class="sm-section-name">Cinematic Page Header</span>
         </div>
-        <div class="sm-sub"><span class="sm-sub-name">Page title + breadcrumb</span></div>
+        <div class="sm-sub"><span class="sm-sub-name">Dark full-width title band</span></div>
+        <div class="sm-sub"><span class="sm-sub-name">Piece count · coordinates</span></div>
 
         <div class="sm-section">
           <span class="sm-section-num">01</span>
-          <span class="sm-section-name">Category Filters</span>
+          <span class="sm-section-name">Category Filter Bar</span>
+          <span class="sm-badge sticky">sticky</span>
         </div>
-        <div class="sm-sub"><span class="sm-sub-name">All / Necklaces / Earrings</span></div>
-        <div class="sm-sub"><span class="sm-sub-name">Rings / Bracelets</span></div>
+        <div class="sm-sub"><span class="sm-sub-name">Everything / Rings / Necklaces</span></div>
+        <div class="sm-sub"><span class="sm-sub-name">Earrings / Bracelets + Sort</span></div>
 
         <div class="sm-section">
           <span class="sm-section-num">02</span>
-          <span class="sm-section-name">Product Grid</span>
+          <span class="sm-section-name">Product Grid — All pieces</span>
           <span class="sm-badge api">API</span>
         </div>
-        <div class="sm-sub"><span class="sm-sub-name">ProductCard components</span></div>
+        <div class="sm-sub"><span class="sm-sub-name">Featured first item (2-col)</span></div>
+        <div class="sm-sub"><span class="sm-sub-name">3-col grid · hover overlay</span></div>
         <div class="sm-sub"><span class="sm-sub-name">Name · Price · Category</span></div>
 
         <div class="sm-section">
           <span class="sm-section-num">03</span>
-          <span class="sm-section-name">Care Note</span>
+          <span class="sm-section-name">Closing Mark</span>
         </div>
-        <div class="sm-sub"><span class="sm-sub-name">House repair promise</span></div>
+        <div class="sm-sub"><span class="sm-sub-name">Brand mark + repair promise</span></div>
 
       </div>
     </div>
@@ -382,14 +385,14 @@
       </div>
     </div>
 
-    <!-- PRODUCT -->
+    <!-- PRODUCT — detail page, not in main nav -->
     <div class="sm-page page-product">
       <div class="sm-page-header">
         <div class="sm-page-file">
           <span>product.html</span>
           <a href="product.html">product.jsx</a>
         </div>
-        <div class="sm-page-title"><em>Product</em> Detail</div>
+        <div class="sm-page-title"><em>Piece</em> Detail <span style="font-size:11px;font-family:var(--mono);color:var(--muted);letter-spacing:.1em;vertical-align:middle;margin-left:6px">not in nav</span></div>
       </div>
       <div class="sm-sections">
 
@@ -501,9 +504,8 @@
 
       <div class="sm-file-card">
         <div class="sm-file-name">interior-hero.jsx/css</div>
-        <div class="sm-file-role">Shared interior page header with title and breadcrumb navigation</div>
+        <div class="sm-file-role">Shared interior page header with title and breadcrumb — About &amp; Product pages only</div>
         <div class="sm-file-pages">
-          <span class="sm-file-page-dot" style="background:#FDF5E8;color:#C9B68F">Shop</span>
           <span class="sm-file-page-dot" style="background:#E8EEF4;color:#7A8FA3">About</span>
           <span class="sm-file-page-dot" style="background:#F4EEE8;color:#9A7B6E">Product</span>
         </div>

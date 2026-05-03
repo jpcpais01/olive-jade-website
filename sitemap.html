@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Site Map — Jade & Olive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink:      #1A1A18;
+    --ink-soft: #5A5A54;
+    --muted:    #9A9A92;
+    --hairline: #E2DDD4;
+    --bg:       #F8F5EF;
+    --bg-warm:  #F2EFE8;
+    --jade:     #4A7C6F;
+    --sand:     #C9B68F;
+    --serif:    'Cormorant Garamond', Georgia, serif;
+    --mono:     'JetBrains Mono', monospace;
+    --sans:     'Inter', sans-serif;
+  }
+
+  html { background: var(--bg); color: var(--ink); font-family: var(--sans); }
+  body { min-height: 100vh; padding: 80px clamp(24px, 6vw, 120px) 120px; }
+
+  /* ── Header ── */
+  .sm-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    border-bottom: 1px solid var(--hairline);
+    padding-bottom: 32px; margin-bottom: 72px; gap: 40px; flex-wrap: wrap;
+  }
+  .sm-wordmark {
+    font-family: var(--serif);
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 0.92; letter-spacing: -0.024em;
+  }
+  .sm-wordmark em { font-style: italic; color: var(--jade); }
+  .sm-header-right {
+    font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.26em;
+    text-transform: uppercase; color: var(--muted); text-align: right; line-height: 1.9;
+  }
+
+  /* ── Shared bar ── */
+  .sm-shared {
+    background: var(--ink); color: #F2EFE8;
+    border-radius: 6px; padding: 20px 32px;
+    display: flex; align-items: center; gap: 48px; flex-wrap: wrap;
+    margin-bottom: 56px;
+  }
+  .sm-shared-label {
+    font-family: var(--mono); font-size: 8.5px; letter-spacing: 0.32em;
+    text-transform: uppercase; color: rgba(242,239,232,0.38); flex-shrink: 0;
+  }
+  .sm-shared-chips { display: flex; gap: 10px; flex-wrap: wrap; }
+  .sm-chip {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em;
+    text-transform: uppercase; padding: 5px 12px;
+    border: 1px solid rgba(242,239,232,0.2); border-radius: 2px;
+    color: rgba(242,239,232,0.65);
+  }
+
+  /* ── Pages grid ── */
+  .sm-pages {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-bottom: 72px;
+  }
+
+  /* ── Page card ── */
+  .sm-page {
+    background: #fff;
+    border: 1px solid var(--hairline);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .sm-page-header {
+    padding: 24px 24px 18px;
+    border-bottom: 2px solid var(--hairline);
+    position: relative;
+  }
+  .sm-page-header::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--page-accent);
+  }
+  .sm-page-file {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .sm-page-file a {
+    color: var(--page-accent); text-decoration: none;
+    transition: opacity .2s; display: inline-flex; align-items: center; gap: 5px;
+  }
+  .sm-page-file a:hover { opacity: 0.7; }
+  .sm-page-file a::after { content: '↗'; font-size: 10px; }
+  .sm-page-title {
+    font-family: var(--serif); font-size: 26px; letter-spacing: -0.012em;
+    color: var(--ink); line-height: 1;
+  }
+  .sm-page-title em { font-style: italic; color: var(--page-accent); }
+
+  /* Section list */
+  .sm-sections { padding: 18px 0 12px; }
+  .sm-section {
+    padding: 9px 24px;
+    display: flex; align-items: baseline; gap: 10px;
+    border-bottom: 1px solid var(--bg);
+    transition: background .2s;
+  }
+  .sm-section:last-child { border-bottom: none; }
+  .sm-section:hover { background: var(--bg); }
+  .sm-section-num {
+    font-family: var(--mono); font-size: 8px; letter-spacing: 0.16em;
+    color: var(--page-accent); opacity: 0.7; flex-shrink: 0; width: 22px;
+  }
+  .sm-section-name {
+    font-size: 12.5px; color: var(--ink-soft); line-height: 1.4; flex: 1;
+  }
+  .sm-section-note {
+    font-family: var(--mono); font-size: 8px; letter-spacing: 0.1em;
+    color: var(--muted); flex-shrink: 0;
+  }
+
+  /* Sub-items (cities, categories etc.) */
+  .sm-sub {
+    padding: 4px 24px 4px 56px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .sm-sub::before {
+    content: ''; width: 12px; height: 1px;
+    background: var(--hairline); flex-shrink: 0;
+  }
+  .sm-sub-name { font-size: 11px; color: var(--muted); }
+
+  /* Tag badges */
+  .sm-badge {
+    font-family: var(--mono); font-size: 7.5px; letter-spacing: 0.14em;
+    text-transform: uppercase; padding: 2px 7px;
+    background: var(--bg); border-radius: 2px; color: var(--muted); flex-shrink: 0;
+  }
+  .sm-badge.video { background: #E8F0EE; color: var(--jade); }
+  .sm-badge.api   { background: #EEE8E0; color: #8B6F3C; }
+  .sm-badge.anim  { background: #EEE8EE; color: #7A5C8A; }
+  .sm-badge.sticky { background: #E8EEF0; color: #3C6B8B; }
+
+  /* ── CSS / JS files panel ── */
+  .sm-files-section { margin-bottom: 72px; }
+  .sm-files-title {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 24px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .sm-files-title::after { content: ''; flex: 1; height: 1px; background: var(--hairline); }
+  .sm-files-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  }
+  .sm-file-card {
+    border: 1px solid var(--hairline); border-radius: 4px;
+    padding: 18px 20px; background: #fff;
+  }
+  .sm-file-name {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+    color: var(--ink); margin-bottom: 8px;
+  }
+  .sm-file-role { font-size: 12px; color: var(--ink-soft); line-height: 1.5; }
+  .sm-file-pages {
+    margin-top: 10px; display: flex; gap: 5px; flex-wrap: wrap;
+  }
+  .sm-file-page-dot {
+    font-family: var(--mono); font-size: 8px; letter-spacing: 0.12em;
+    padding: 2px 8px; border-radius: 2px; text-transform: uppercase;
+  }
+
+  /* ── Legend ── */
+  .sm-legend {
+    display: flex; gap: 28px; flex-wrap: wrap; align-items: center;
+    padding-top: 40px; border-top: 1px solid var(--hairline);
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted);
+  }
+  .sm-legend-item { display: flex; align-items: center; gap: 8px; }
+  .sm-legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+  /* Page accent colours */
+  .page-home    { --page-accent: #4A7C6F; }
+  .page-shop    { --page-accent: #C9B68F; }
+  .page-about   { --page-accent: #7A8FA3; }
+  .page-product { --page-accent: #9A7B6E; }
+
+  @media (max-width: 1200px) { .sm-pages { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 880px)  {
+    .sm-pages { grid-template-columns: 1fr; }
+    .sm-files-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px)  { .sm-files-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="sm-header">
+    <div class="sm-wordmark">Jade<br/><em>&amp; Olive</em></div>
+    <div class="sm-header-right">
+      Site Architecture · MMXXVI<br/>
+      4 pages · 9 components · 2 seas<br/>
+      Athens · Kyoto
+    </div>
+  </header>
+
+  <!-- Shared components bar -->
+  <div class="sm-shared">
+    <span class="sm-shared-label">Shared on all pages</span>
+    <div class="sm-shared-chips">
+      <span class="sm-chip">Nav</span>
+      <span class="sm-chip">Footer</span>
+      <span class="sm-chip">CartDrawer</span>
+      <span class="sm-chip">ProductCard</span>
+      <span class="sm-chip">components.jsx</span>
+      <span class="sm-chip">styles.css</span>
+      <span class="sm-chip">tweaks-panel.jsx</span>
+      <span class="sm-chip">api/zendrop.js</span>
+    </div>
+  </div>
+
+  <!-- Pages -->
+  <div class="sm-pages">
+
+    <!-- HOME -->
+    <div class="sm-page page-home">
+      <div class="sm-page-header">
+        <div class="sm-page-file">
+          <span>index.html</span>
+          <a href="index.html">home.jsx</a>
+        </div>
+        <div class="sm-page-title">Home</div>
+      </div>
+      <div class="sm-sections">
+
+        <div class="sm-section">
+          <span class="sm-section-num">00</span>
+          <span class="sm-section-name">Loader Screen</span>
+          <span class="sm-badge anim">animated</span>
+        </div>
+        <div class="sm-sub"><span class="sm-sub-name">Video background</span></div>
+        <div class="sm-sub"><span class="sm-sub-name">Brand mark seal</span></div>
+        <div class="sm-sub"><span class="sm-sub-name">Progress meter</span></div>
+
+        <div class="sm-section">
+          <span class="sm-section-num">01</span>
+          <span class="sm-section-name">Hero — Video Carousel</span>
+          <span class="sm-badge video">3 videos</span>
+        </div>
+        <div class="sm-sub"><span class="sm-sub-name">N°01 White Stone, Cyclades</span></div>
+        <div class="sm-sub"><span class="sm-sub-name">N°02 Olive Grove, Crete</span></div>
+        <div class="sm-sub"><span class="sm-sub-name">N°03 Aegean Light, Naxos</span></div>
+
+        <div class="sm-section">
+          <span class="sm-section-num">—</span>
+          <span class="sm-section-name">Tide Marquee</span>
+          <span class="sm-badge anim">scroll</span>
+        </div>
+
+        <div class="sm-section">
+          <span class="sm-section-num">I</span>
+          <span class="sm-section-name">Spring Collection</span>
+          <span class="sm-badge api">API</span>
+        </div>
+        <div class="sm-sub"><span class="sm-sub-name">4 featured products</span></div>
+
+        <div class="sm-section">
+          <span class="sm-section-num">II</span>
+          <span class="sm-section-name">Two Seas</span>
+          <span class="sm-badge sticky">sticky</span>
+        </div>
+        <div class="sm-sub"><span class="sm-sub-name">Mediterranean (video bg)</span></div>
+        <div class="sm-sub"><span class="sm-sub-name">Sea of Japan (video bg)</span></div>
+
+        <div class="sm-section">
+          <span class="sm-section-num">III</span>
+          <span class="sm-section-name">Summer Collection</span>
+        </div>
+        <div class="sm-sub"><span class="sm-sub-name">12-piece mosaic grid</span></div>
+
+        <div class="sm-section">
+          <span class="sm-section-num">IV</span>
+          <span class="sm-section-name">Inspirations</span>
+          <span class="sm-badge anim">SVG map</span>
+        </div>
+        <div class="sm-sub"><span class="sm-sub-name">Lisbon · Valencia · Positano</span></div>
+        <div class="sm-sub"><span class="sm-sub-name">Mykonos · Antalya</span></div>
+
+      </div>
+    </div>
+
+    <!-- SHOP -->
+    <div class="sm-page page-shop">
+      <div class="sm-page-header">
+        <div class="sm-page-file">
+          <span>shop.html</span>
+          <a href="shop.html">shop.jsx</a>
+        </div>
+        <div class="sm-page-title"><em>Shop</em></div>
+      </div>
+      <div class="sm-sections">
+
+        <div class="sm-section">
+          <span class="sm-section-num">—</span>
+          <span class="sm-section-name">Interior Hero</span>
+        </div>
+        <div class="sm-sub"><span class="sm-sub-name">Page title + breadcrumb</span></div>
+
+        <div class="sm-section">
+          <span class="sm-section-num">01</span>
+          <span class="sm-section-name">Category Filters</span>
+        </div>
+        <div class="sm-sub"><span class="sm-sub-name">All / Necklaces / Earrings</span></div>
+        <div class="sm-sub"><span class="sm-sub-name">Rings / Bracelets</span></div>
+
+        <div class="sm-section">
+          <span class="sm-section-num">02</span>
+          <span class="sm-section-name">Product Grid</span>
+          <span class="sm-badge api">API</span>
+        </div>
+        <div class="sm-sub"><span class="sm-sub-name">ProductCard components</span></div>
+        <div class="sm-sub"><span class="sm-sub-name">Name · Price · Category</span></div>
+
+        <div class="sm-section">
+          <span class="sm-section-num">03</span>
+          <span class="sm-section-name">Care Note</span>
+        </div>
+        <div class="sm-sub"><span class="sm-sub-name">House repair promise</span></div>
+
+      </div>
+    </div>
+
+    <!-- ABOUT -->
+    <div class="sm-page page-about">
+      <div class="sm-page-header">
+        <div class="sm-page-file">
+          <span>about.html</span>
+          <a href="about.html">about.jsx</a>
+        </div>
+        <div class="sm-page-title">The <em>House</em></div>
+      </div>
+      <div class="sm-sections">
+
+        <div class="sm-section">
+          <span class="sm-section-num">—</span>
+          <span class="sm-section-name">Interior Hero</span>
+        </div>
+        <div class="sm-sub"><span class="sm-sub-name">Page title + breadcrumb</span></div>
+
+        <div class="sm-section">
+          <span class="sm-section-num">01</span>
+          <span class="sm-section-name">The Way We Make</span>
+        </div>
+        <div class="sm-sub"><span class="sm-sub-name">Two-column editorial text</span></div>
+
+        <div class="sm-section">
+          <span class="sm-section-num">02</span>
+          <span class="sm-section-name">Timeline</span>
+        </div>
+        <div class="sm-sub"><span class="sm-sub-name">4 founding milestones</span></div>
+
+        <div class="sm-section">
+          <span class="sm-section-num">03</span>
+          <span class="sm-section-name">Atelier Cards</span>
+        </div>
+        <div class="sm-sub"><span class="sm-sub-name">Athens · Kyoto · Lisbon</span></div>
+
+        <div class="sm-section">
+          <span class="sm-section-num">04</span>
+          <span class="sm-section-name">Founder Signatures</span>
+        </div>
+        <div class="sm-sub"><span class="sm-sub-name">Handwritten closing note</span></div>
+
+      </div>
+    </div>
+
+    <!-- PRODUCT -->
+    <div class="sm-page page-product">
+      <div class="sm-page-header">
+        <div class="sm-page-file">
+          <span>product.html</span>
+          <a href="product.html">product.jsx</a>
+        </div>
+        <div class="sm-page-title"><em>Product</em> Detail</div>
+      </div>
+      <div class="sm-sections">
+
+        <div class="sm-section">
+          <span class="sm-section-num">—</span>
+          <span class="sm-section-name">Interior Hero</span>
+        </div>
+        <div class="sm-sub"><span class="sm-sub-name">Breadcrumb navigation</span></div>
+
+        <div class="sm-section">
+          <span class="sm-section-num">01</span>
+          <span class="sm-section-name">Image Gallery</span>
+        </div>
+        <div class="sm-sub"><span class="sm-sub-name">Main image + thumbnails</span></div>
+
+        <div class="sm-section">
+          <span class="sm-section-num">02</span>
+          <span class="sm-section-name">Product Info</span>
+          <span class="sm-badge api">API</span>
+        </div>
+        <div class="sm-sub"><span class="sm-sub-name">Name · Price · Material</span></div>
+        <div class="sm-sub"><span class="sm-sub-name">Origin · Details</span></div>
+
+        <div class="sm-section">
+          <span class="sm-section-num">03</span>
+          <span class="sm-section-name">Add to Cart</span>
+        </div>
+        <div class="sm-sub"><span class="sm-sub-name">Size · Qty · Toast confirm</span></div>
+
+        <div class="sm-section">
+          <span class="sm-section-num">04</span>
+          <span class="sm-section-name">Related Products</span>
+          <span class="sm-badge api">API</span>
+        </div>
+        <div class="sm-sub"><span class="sm-sub-name">3-up ProductCard grid</span></div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Source files panel -->
+  <div class="sm-files-section">
+    <div class="sm-files-title">Source files</div>
+    <div class="sm-files-grid">
+
+      <div class="sm-file-card">
+        <div class="sm-file-name">components.jsx</div>
+        <div class="sm-file-role">Shared UI — Nav, Footer, CartDrawer, ProductCard, Icons, hooks</div>
+        <div class="sm-file-pages">
+          <span class="sm-file-page-dot" style="background:#E8F0EE;color:#4A7C6F">Home</span>
+          <span class="sm-file-page-dot" style="background:#FDF5E8;color:#C9B68F">Shop</span>
+          <span class="sm-file-page-dot" style="background:#E8EEF4;color:#7A8FA3">About</span>
+          <span class="sm-file-page-dot" style="background:#F4EEE8;color:#9A7B6E">Product</span>
+        </div>
+      </div>
+
+      <div class="sm-file-card">
+        <div class="sm-file-name">styles.css</div>
+        <div class="sm-file-role">Global tokens, buttons, nav, footer, reveal animations, layout utilities</div>
+        <div class="sm-file-pages">
+          <span class="sm-file-page-dot" style="background:#E8F0EE;color:#4A7C6F">Home</span>
+          <span class="sm-file-page-dot" style="background:#FDF5E8;color:#C9B68F">Shop</span>
+          <span class="sm-file-page-dot" style="background:#E8EEF4;color:#7A8FA3">About</span>
+          <span class="sm-file-page-dot" style="background:#F4EEE8;color:#9A7B6E">Product</span>
+        </div>
+      </div>
+
+      <div class="sm-file-card">
+        <div class="sm-file-name">home.jsx</div>
+        <div class="sm-file-role">All home page sections — Hero, TwoSeas, Collections, Inspirations</div>
+        <div class="sm-file-pages">
+          <span class="sm-file-page-dot" style="background:#E8F0EE;color:#4A7C6F">Home only</span>
+        </div>
+      </div>
+
+      <div class="sm-file-card">
+        <div class="sm-file-name">home.css</div>
+        <div class="sm-file-role">Styles for hero carousel, collection grids, inspirations map, lookbook</div>
+        <div class="sm-file-pages">
+          <span class="sm-file-page-dot" style="background:#E8F0EE;color:#4A7C6F">Home</span>
+          <span class="sm-file-page-dot" style="background:#F4EEE8;color:#9A7B6E">Product</span>
+        </div>
+      </div>
+
+      <div class="sm-file-card">
+        <div class="sm-file-name">sea.css</div>
+        <div class="sm-file-role">Hero video stage, TwoSeas sticky section, sea cursor FX, watermark</div>
+        <div class="sm-file-pages">
+          <span class="sm-file-page-dot" style="background:#E8F0EE;color:#4A7C6F">Home only</span>
+        </div>
+      </div>
+
+      <div class="sm-file-card">
+        <div class="sm-file-name">sea-fx.jsx</div>
+        <div class="sm-file-role">Sea cursor particle FX, mouse parallax hook, ambient atmosphere effects</div>
+        <div class="sm-file-pages">
+          <span class="sm-file-page-dot" style="background:#E8F0EE;color:#4A7C6F">Home only</span>
+        </div>
+      </div>
+
+      <div class="sm-file-card">
+        <div class="sm-file-name">loader.css</div>
+        <div class="sm-file-role">Intro loading screen — dark bg, video overlay, brand mark, progress meter</div>
+        <div class="sm-file-pages">
+          <span class="sm-file-page-dot" style="background:#E8F0EE;color:#4A7C6F">Home only</span>
+        </div>
+      </div>
+
+      <div class="sm-file-card">
+        <div class="sm-file-name">interior-hero.jsx/css</div>
+        <div class="sm-file-role">Shared interior page header with title and breadcrumb navigation</div>
+        <div class="sm-file-pages">
+          <span class="sm-file-page-dot" style="background:#FDF5E8;color:#C9B68F">Shop</span>
+          <span class="sm-file-page-dot" style="background:#E8EEF4;color:#7A8FA3">About</span>
+          <span class="sm-file-page-dot" style="background:#F4EEE8;color:#9A7B6E">Product</span>
+        </div>
+      </div>
+
+      <div class="sm-file-card">
+        <div class="sm-file-name">api/zendrop.js</div>
+        <div class="sm-file-role">Product data API — listProducts, getProduct, addToCart, getCart</div>
+        <div class="sm-file-pages">
+          <span class="sm-file-page-dot" style="background:#E8F0EE;color:#4A7C6F">Home</span>
+          <span class="sm-file-page-dot" style="background:#FDF5E8;color:#C9B68F">Shop</span>
+          <span class="sm-file-page-dot" style="background:#F4EEE8;color:#9A7B6E">Product</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Legend -->
+  <div class="sm-legend">
+    <span>Legend</span>
+    <div class="sm-legend-item"><div class="sm-legend-dot" style="background:#4A7C6F"></div>Home</div>
+    <div class="sm-legend-item"><div class="sm-legend-dot" style="background:#C9B68F"></div>Shop</div>
+    <div class="sm-legend-item"><div class="sm-legend-dot" style="background:#7A8FA3"></div>About</div>
+    <div class="sm-legend-item"><div class="sm-legend-dot" style="background:#9A7B6E"></div>Product</div>
+    <div class="sm-legend-item"><span class="sm-badge api" style="margin:0">API</span>Fetches live product data</div>
+    <div class="sm-legend-item"><span class="sm-badge video" style="margin:0">video</span>Video background</div>
+    <div class="sm-legend-item"><span class="sm-badge sticky" style="margin:0">sticky</span>Scroll-pinned section</div>
+    <div class="sm-legend-item"><span class="sm-badge anim" style="margin:0">anim</span>Animated / interactive</div>
+  </div>
+
+</body>
+</html>

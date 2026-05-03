@@ -1,5 +1,5 @@
 /* global React, ReactDOM */
-const { useState, useEffect, useRef } = React;
+const { useState, useEffect } = React;
 
 const CATS = [
   { slug: "all",       label: "Everything"  },
@@ -47,23 +47,6 @@ function CollectionApp() {
   const [sort, setSort]     = useState("default");
   const [products, setProducts] = useState(null);
   const [cartOpen, setCartOpen] = useState(false);
-  const headRef = useRef(null);
-
-  // Scroll nav dark while header is visible
-  useEffect(() => {
-    const nav = document.querySelector(".nav");
-    if (!nav) return;
-    nav.classList.add("on-dark");
-    const onScroll = () => {
-      const r = headRef.current?.getBoundingClientRect();
-      if (!r) return;
-      if (r.bottom < 80) nav.classList.remove("on-dark");
-      else nav.classList.add("on-dark");
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => { window.removeEventListener("scroll", onScroll); nav.classList.remove("on-dark"); };
-  }, []);
 
   useEffect(() => {
     setProducts(null);
@@ -83,22 +66,18 @@ function CollectionApp() {
       <window.Nav current="shop" onOpenCart={() => setCartOpen(true)} />
       <main>
 
-        {/* ── Cinematic page header ── */}
-        <header className="ch" ref={headRef}>
-          <div className="ch-bg" />
-          <div className="ch-veil" />
+        {/* ── Page header ── */}
+        <header className="ch">
           <div className="ch-inner">
-            <div className="ch-top">
-              <span className="ch-eyebrow">Maison · MMXXVI · Athens &amp; Kyoto</span>
-            </div>
-            <div className="ch-body">
+            <div className="ch-left">
+              <div className="ch-eyebrow">Maison · MMXXVI · Athens &amp; Kyoto</div>
               <h1 className="ch-title">The <em>Collection</em></h1>
-              <p className="ch-sub">Every piece numbered, every piece made by hand.<br/>When a piece leaves, it is repaired — never replaced.</p>
             </div>
-            <div className="ch-foot">
-              <span className="ch-count">{displayed ? `${String(displayed.length).padStart(2, "0")} pieces available` : ""}</span>
-              <span className="ch-foot-sep" />
-              <span className="ch-coords">38.72°N · 9.13°W ⟷ 35.01°N · 135.76°E</span>
+            <div className="ch-right">
+              <span className="ch-count">
+                {displayed ? `${String(displayed.length).padStart(2, "0")} pieces` : ""}
+              </span>
+              <span className="ch-sub">38.72°N · 9.13°W<br/>35.01°N · 135.76°E</span>
             </div>
           </div>
         </header>

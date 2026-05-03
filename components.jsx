@@ -178,8 +178,6 @@ function Footer() {
           <h4 className="footer-col-hd">Collections</h4>
           <ul>
             <li><a href="shop.html">Shop All</a></li>
-            <li><a href="shop.html?season=spring">Spring Edition · MMXXVI</a></li>
-            <li><a href="shop.html?season=summer">Summer Edition · MMXXVI</a></li>
             <li><a href="shop.html?cat=necklaces">Necklaces</a></li>
             <li><a href="shop.html?cat=earrings">Earrings</a></li>
             <li><a href="shop.html?cat=rings">Rings</a></li>
@@ -190,12 +188,9 @@ function Footer() {
         <div className="footer-col">
           <h4 className="footer-col-hd">The House</h4>
           <ul>
-            <li><a href="about.html">About</a></li>
-            <li><a href="about.html#atelier">The Atelier</a></li>
-            <li><a href="about.html#materials">Materials</a></li>
-            <li><a href="about.html#lookbook">Lookbook</a></li>
-            <li><a href="#">Care &amp; Repair</a></li>
-            <li><a href="#">Press</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="about.html">Our Story</a></li>
+            <li><a href="about.html">The Ateliers</a></li>
           </ul>
         </div>
 

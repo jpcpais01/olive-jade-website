@@ -79,7 +79,7 @@ body.sea-cursor-on, body.sea-cursor-on a, body.sea-cursor-on button { cursor: no
   position: relative;
   height: 100vh; min-height: 720px; max-height: 1080px;
   overflow: hidden;
-  background: var(--sea-deep);
+  background: #0A0A08;
   color: #FBF9F3;
 }
 .sea-hero, .sea-hero * { box-sizing: border-box; }
@@ -102,7 +102,7 @@ body.sea-cursor-on, body.sea-cursor-on a, body.sea-cursor-on button { cursor: no
 .sea-hero-slide .sea-hero-img {
   position: absolute; inset: 0;
   width: 100%; height: 100%; object-fit: cover; display: block;
-  background: var(--sea-deep);
+  background: #0A0A08;
   transform: scale(1.08);
 }
 .sea-hero-slide .sea-hero-img { background-size: cover; background-position: center; }
@@ -111,16 +111,16 @@ body.sea-cursor-on, body.sea-cursor-on a, body.sea-cursor-on button { cursor: no
 .sea-hero-veil {
   position: absolute; inset: 0;
   background:
-    radial-gradient(ellipse at 50% 100%, rgba(11,41,66,0.85) 0%, rgba(11,41,66,0) 55%),
-    linear-gradient(180deg, rgba(11,41,66,0.55) 0%, rgba(11,41,66,0.0) 24%, rgba(11,41,66,0.0) 60%, rgba(11,41,66,0.85) 100%);
+    radial-gradient(ellipse at 50% 100%, rgba(10,10,8,0.82) 0%, rgba(10,10,8,0) 55%),
+    linear-gradient(180deg, rgba(10,10,8,0.45) 0%, rgba(10,10,8,0.0) 24%, rgba(10,10,8,0.0) 60%, rgba(10,10,8,0.78) 100%);
   pointer-events: none;
 }
 /* subtle caustic light shimmer */
 .sea-hero-caustic {
   position: absolute; inset: -10%;
   background:
-    radial-gradient(circle at 30% 20%, rgba(197,218,232,0.08) 0%, transparent 35%),
-    radial-gradient(circle at 70% 60%, rgba(197,218,232,0.10) 0%, transparent 40%),
+    radial-gradient(circle at 30% 20%, rgba(229,217,184,0.07) 0%, transparent 35%),
+    radial-gradient(circle at 70% 60%, rgba(229,217,184,0.06) 0%, transparent 40%),
     radial-gradient(circle at 50% 90%, rgba(229,217,184,0.10) 0%, transparent 40%);
   mix-blend-mode: screen;
   animation: caustic 14s ease-in-out infinite alternate;

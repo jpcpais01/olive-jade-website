@@ -105,7 +105,7 @@ em { font-style: italic; }
 .nav.on-dark.scrolled { color: var(--ink); }
 .mobile-menu-btn { display: none; }
 .nav-brand { grid-column: 2; grid-row: 1; justify-self: center; }
-.nav-logo { font-family: var(--serif); font-size: 26px; letter-spacing: 0; line-height: 1; justify-self: center; }
+.nav-logo { font-family: var(--serif); font-size: 26px; letter-spacing: 0; line-height: 1; }
 .nav-logo em { font-style: italic; font-weight: 400; }
 .nav-actions { grid-column: 3; grid-row: 1; justify-self: end; align-self: center; display: flex; gap: 22px; align-items: center; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase; }
 .nav-actions .cart { display: inline-flex; gap: 10px; align-items: center; }
@@ -141,7 +141,7 @@ em { font-style: italic; }
     align-self: center; justify-self: start;
   }
   .mobile-menu-btn span { display: block; width: 22px; height: 1px; background: currentColor; }
-  .nav-brand { grid-column: 2; grid-row: 1; justify-self: center; }
+  .nav-brand { position: absolute; left: 50%; transform: translateX(-50%); grid-column: unset; grid-row: unset; }
   .nav-actions { grid-column: 3; grid-row: 1; justify-self: end; align-self: center; }
   .nav-links { display: none; }
   .nav-logo { font-size: 19px; }

@@ -128,7 +128,6 @@ function Nav({ current = "home", onNav, onOpenCart }) {
         <div className="nav-actions">
           <button className="cart" onClick={onOpenCart} aria-label="Open bag">
             <Icon.Bag />
-            <span style={{ fontFamily: "var(--mono)", fontSize: 11, letterSpacing: "0.1em" }}>BAG</span>
             {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
           </button>
         </div>

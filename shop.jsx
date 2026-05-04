@@ -83,12 +83,14 @@ function CollectionApp() {
               ))}
             </nav>
             <label className="cf-sort">
-              <span>Sort by</span>
-              <select value={sort} onChange={e => setSort(e.target.value)}>
-                <option value="default">Featured</option>
-                <option value="price-asc">Price: low to high</option>
-                <option value="price-desc">Price: high to low</option>
-              </select>
+              <span className="cf-sort-label">Sort by</span>
+              <div className="cf-sort-wrap">
+                <select value={sort} onChange={e => setSort(e.target.value)}>
+                  <option value="default">Featured</option>
+                  <option value="price-asc">Price: Low to High</option>
+                  <option value="price-desc">Price: High to Low</option>
+                </select>
+              </div>
             </label>
           </div>
         </div>

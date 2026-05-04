@@ -260,7 +260,7 @@ body.sea-cursor-on, body.sea-cursor-on a, body.sea-cursor-on button { cursor: no
   }
   .sea-orn { display: none; }
   .sea-scroll-cue { display: none; }
-  .sea-hero-overlay { padding: 280px var(--pad-x) 36px; }
+  .sea-hero-overlay { padding: 330px var(--pad-x) 36px; }
   .sea-hero-content { text-align: center; }
   .sea-hero-headline { font-size: clamp(40px, 12vw, 84px); max-width: 100%; }
   .sea-hero-sub { max-width: 100%; }

@@ -253,79 +253,15 @@ body.sea-cursor-on, body.sea-cursor-on a, body.sea-cursor-on button { cursor: no
 @keyframes scrollCue { 0% { top: -50%; } 100% { top: 100%; } }
 
 @media (max-width: 880px) {
-  /* ── Hero: size the entire section to the video's natural 16:9 aspect ratio.
-     This means the hero height = screen-width × 9/16.
-     object-fit: cover on a matching-ratio container = zero cropping, full width visible.
-     No letterbox bands, no huge black voids above/below.                           ── */
   .sea-hero {
-    aspect-ratio: 16 / 9;
-    height: auto;
-    min-height: 200px;
+    height: 70vh;
+    min-height: 0;
     max-height: none;
   }
-
-  /* Video fills the 16:9 container with zero cropping — no scale needed */
-  .sea-hero-slide video,
-  .sea-hero-slide .sea-hero-img {
-    object-fit: cover;
-    transform: none; /* remove base scale(1.08) which would re-introduce cropping */
-  }
-  /* Ken Burns also uses scale — disable to keep full width */
-  .sea-hero-slide.active video,
-  .sea-hero-slide.active .sea-hero-img {
-    animation: none;
-  }
-
-  /* ── Decorative elements that don't fit in the compact hero ── */
-  .sea-orn        { display: none; }
+  .sea-orn { display: none; }
   .sea-scroll-cue { display: none; }
-  .sea-hero-top   { display: none; } /* coords need room that doesn't exist here */
-
-  /* ── Overlay: compress padding so content fits inside the short hero ── */
-  .sea-hero-overlay {
-    padding: 52px var(--pad-x) 6px;
-    gap: 4px;
-  }
-
-  /* Eyebrow */
-  .sea-hero-eyebrow {
-    font-size: 8.5px;
-    letter-spacing: 0.22em;
-    margin-bottom: 6px;
-  }
-  .sea-hero-eyebrow .seh-dot { width: 4px; height: 4px; }
-
-  /* Headline — keep both lines but smaller */
-  .sea-hero-headline {
-    font-size: clamp(22px, 7vw, 38px);
-    line-height: 0.96;
-    max-width: 100%;
-  }
-
-  /* Sub text takes too much vertical space in a short hero */
-  .sea-hero-sub { display: none; }
-
-  /* Actions */
-  .sea-hero-actions {
-    margin-top: 8px !important;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-  .btn-sand   { padding: 10px 16px; font-size: 8.5px; letter-spacing: 0.18em; }
-  .sea-hero-link { display: none; } /* one CTA is enough in compact hero */
-
-  /* Slide rail */
-  .sea-hero-foot {
-    padding-top: 5px;
-    gap: 8px;
-    font-size: 7px;
-    letter-spacing: 0.14em;
-  }
-  .sea-hero-foot-rail { gap: 8px; width: 100%; }
-  .sea-hero-foot-rail button { gap: 4px; flex: 1; min-width: 0; }
-  .sea-hero-foot-rail .hf-bar { width: 16px; flex-shrink: 0; }
-  /* No room for captions in compact rail */
-  .sea-hero-foot-rail button > span:last-child { display: none; }
+  .sea-hero-overlay { padding: 100px var(--pad-x) 28px; }
+  .sea-hero-headline { font-size: clamp(40px, 12vw, 84px); }
 }
 
 /* ===== Tide marquee — under hero ===== */

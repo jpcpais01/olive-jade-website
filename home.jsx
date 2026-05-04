@@ -125,27 +125,45 @@ function TideMarquee() {
   );
 }
 
-// ─── Section I — Four-up vertical strip ──────────────────────────
+// ─── Section I — Shop by Category ───────────────────────────────
+const CAT_LIST = [
+  { slug: "rings",     label: "Rings"     },
+  { slug: "necklaces", label: "Necklaces" },
+  { slug: "earrings",  label: "Earrings"  },
+  { slug: "bracelets", label: "Bracelets" },
+];
+
 function CollectionShowcase() {
-  const [products, setProducts] = useState([]);
+  const [catImages, setCatImages] = useState({});
+
   useEffect(() => {
-    window.ZendropAPI.listProducts({ featured: true }).then(p => setProducts(p.slice(0, 4)));
+    Promise.all(
+      CAT_LIST.map(c =>
+        window.ZendropAPI.listProducts({ category: c.slug }).then(products => ({
+          slug: c.slug,
+          image: products[0]?.images?.[0] || null,
+        }))
+      )
+    ).then(results => {
+      const map = {};
+      results.forEach(r => { map[r.slug] = r.image; });
+      setCatImages(map);
+    });
   }, []);
 
   return (
     <section className="strip-i">
       <div className="strip-i-head">
-        <h2 className="strip-i-title rv-up">Four pieces, this season.</h2>
+        <h2 className="strip-i-title rv-up">Shop by Category</h2>
       </div>
 
       <div className="strip-i-grid">
-        {products.map((p, i) => (
-          <a key={p.id} href={`product.html?id=${p.id}`} className="strip-i-cell">
+        {CAT_LIST.map(c => (
+          <a key={c.slug} href={`shop.html?cat=${c.slug}`} className="strip-i-cell">
             <div className="strip-i-frame">
-              <img src={p.images && p.images[0]} alt={p.name} loading="lazy" />
+              {catImages[c.slug] && <img src={catImages[c.slug]} alt={c.label} loading="lazy" />}
               <div className="strip-i-meta">
-                <span className="strip-i-num">N°{String(i+1).padStart(2,"0")}</span>
-                <span className="strip-i-name">{p.name}</span>
+                <span className="strip-i-name">{c.label}</span>
               </div>
             </div>
           </a>

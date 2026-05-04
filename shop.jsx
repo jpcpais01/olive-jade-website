@@ -62,17 +62,9 @@ function CollectionApp() {
 
         {/* ── Page header ── */}
         <header className="ch">
+          <div className="ch-banner"><img src="images/collection-banner.jpg" alt="" /></div>
           <div className="ch-inner">
-            <div className="ch-left">
-              <div className="ch-eyebrow">Maison · MMXXVI · Athens &amp; Kyoto</div>
-              <h1 className="ch-title">The <em>Collection</em></h1>
-            </div>
-            <div className="ch-right">
-              <span className="ch-count">
-                {displayed ? `${String(displayed.length).padStart(2, "0")} pieces` : ""}
-              </span>
-              <span className="ch-sub">38.72°N · 9.13°W<br/>35.01°N · 135.76°E</span>
-            </div>
+            <h1 className="ch-title">The <em>Collection</em></h1>
           </div>
         </header>
 

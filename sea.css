@@ -253,12 +253,41 @@ body.sea-cursor-on, body.sea-cursor-on a, body.sea-cursor-on button { cursor: no
 @keyframes scrollCue { 0% { top: -50%; } 100% { top: 100%; } }
 
 @media (max-width: 880px) {
-  .sea-hero-overlay { padding: 140px var(--pad-x) 40px; }
-  .sea-hero-top { padding: 90px var(--pad-x) 0; gap: 8px; flex-wrap: wrap; }
-  .sea-hero-orn { display: none; }
+  /* Hero: shrink to fit actual phone screen */
+  .sea-hero { min-height: 560px; }
+
+  .sea-hero-overlay {
+    padding: 110px var(--pad-x) 28px;
+    gap: 20px;
+  }
+  .sea-hero-top {
+    padding: 80px var(--pad-x) 0;
+    font-size: 9px;
+  }
+  /* Hide the right-side coords on mobile — too cramped */
+  .sea-hero-top > div:last-child { display: none; }
+
   .sea-orn { display: none; }
   .sea-scroll-cue { display: none; }
-  .sea-hero-headline { font-size: clamp(52px, 14vw, 100px); }
+
+  .sea-hero-headline {
+    font-size: clamp(44px, 12vw, 84px);
+    max-width: 100%;
+  }
+  .sea-hero-sub {
+    font-size: 16px;
+    margin-top: 18px;
+    max-width: 100%;
+  }
+  .sea-hero-actions {
+    margin-top: 24px !important;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  /* Slide rail: hide the long caption labels, keep number + bar */
+  .sea-hero-foot { gap: 16px; padding-top: 16px; }
+  .sea-hero-foot-rail { gap: 12px; }
+  .sea-hero-foot-rail button > span:last-child { display: none; }
 }
 
 /* ===== Tide marquee — under hero ===== */
@@ -1040,13 +1069,67 @@ body.sea-cursor-on, body.sea-cursor-on a, body.sea-cursor-on button { cursor: no
 .four-seas .fs-foot-fill { position: absolute; left: 0; top: 0; bottom: 0; background: #F2EDE0; transition: width .15s linear; }
 
 @media (max-width: 880px) {
+  /* Undo sticky height set by JS */
   .four-seas { height: auto !important; }
-  .four-seas .fs-stick { position: relative; height: auto; }
-  .four-seas .fs-stage, .four-seas .fs-watermark { display: none; }
-  .four-seas .fs-head { position: relative; padding: 60px var(--pad-x) 0; }
-  .four-seas .fs-content { position: relative; inset: auto; padding: 60px var(--pad-x); display: block; }
-  .four-seas .fs-panel { position: relative; opacity: 1; transform: none; padding: 80px 0; border-bottom: 1px solid rgba(242,237,224,0.18); }
+
+  /* Unstick wrapper — fix overflow:hidden and flex that were clipping/misaligning content */
+  .four-seas .fs-stick {
+    position: relative;
+    height: auto;
+    overflow: visible;
+    display: block;
+  }
+
+  /* Hide scroll-driven visuals */
+  .four-seas .fs-stage,
+  .four-seas .fs-watermark,
+  .four-seas .fs-bg-veil,
+  .four-seas .fs-grain { display: none; }
+
+  .four-seas .fs-head {
+    position: relative;
+    padding: 48px var(--pad-x) 32px;
+  }
+
+  /* Stack content vertically */
+  .four-seas .fs-content {
+    position: relative;
+    /* Explicitly reset every inset property — 'inset: auto' alone isn't enough */
+    top: auto; left: auto; right: auto; bottom: auto;
+    width: 100%;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Each panel: full-width card, fix the left:50% / top:55% offset from base CSS */
+  .four-seas .fs-panel {
+    position: relative;
+    top: auto;
+    left: auto;           /* ← was 50% in base, causing panels to be off-screen */
+    width: 100%;
+    opacity: 1 !important;
+    transform: none !important;
+    text-align: left;
+    padding: 52px var(--pad-x) 56px;
+    border-bottom: 1px solid rgba(242,237,224,0.15);
+    pointer-events: auto;
+  }
   .four-seas .fs-panel:last-child { border-bottom: none; }
-  .four-seas .fs-panel-name { font-size: clamp(36px, 9.8vw, 70px); white-space: normal; }
-  .four-seas .fs-foot { position: relative; padding: 24px var(--pad-x) 60px; bottom: auto; left: auto; right: auto; }
+
+  .four-seas .fs-panel-num  { margin-bottom: 14px; }
+  .four-seas .fs-panel-place { margin-bottom: 28px; }
+  .four-seas .fs-panel-name {
+    font-size: clamp(40px, 11vw, 72px);
+    white-space: normal;
+    margin-bottom: 20px;
+  }
+  .four-seas .fs-panel-line { font-size: 17px; margin-bottom: 20px; }
+  .four-seas .fs-panel-body { font-size: 14.5px; max-width: 100%; }
+
+  .four-seas .fs-foot {
+    position: relative;
+    bottom: auto; left: auto; right: auto;
+    padding: 20px var(--pad-x) 52px;
+  }
 }

@@ -254,7 +254,7 @@ body.sea-cursor-on, body.sea-cursor-on a, body.sea-cursor-on button { cursor: no
 
 @media (max-width: 880px) {
   .sea-hero {
-    height: 70vh;
+    height: 80vh;
     min-height: 0;
     max-height: none;
   }

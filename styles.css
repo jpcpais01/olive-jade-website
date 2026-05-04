@@ -179,11 +179,11 @@ em { font-style: italic; }
 /* Mobile sub-links */
 .mobile-sub {
   max-height: 0; overflow: hidden;
-  transition: max-height .38s cubic-bezier(.2,.7,.2,1);
+  transition: max-height .45s cubic-bezier(.2,.7,.2,1);
   border-bottom: none;
 }
 .mobile-sub.open {
-  max-height: 500px;
+  max-height: 180px;
   border-bottom: 1px solid var(--hairline);
 }
 .mobile-panel .mobile-sub a {

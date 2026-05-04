@@ -53,32 +53,39 @@
 }
 .cf-cats button:hover { color: var(--ink); }
 .cf-cats button.active { color: var(--ink); border-bottom-color: var(--ink); }
-.cf-sort {
+.cf-sort-custom {
+  position: relative; flex-shrink: 0;
+}
+.cf-sort-btn {
   display: inline-flex; align-items: center; gap: 10px;
   font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em;
-  text-transform: uppercase; color: var(--muted); flex-shrink: 0;
+  text-transform: uppercase; color: var(--muted);
+  padding: 18px 0; cursor: pointer;
+  transition: color .2s ease;
 }
-.cf-sort-label { pointer-events: none; }
-.cf-sort-wrap {
-  position: relative; display: inline-flex; align-items: center;
+.cf-sort-btn:hover { color: var(--ink); }
+.cf-sort-label { color: var(--muted); opacity: 0.6; }
+.cf-sort-value { color: var(--ink); }
+.cf-sort-chevron { transition: transform .25s ease; flex-shrink: 0; }
+.cf-sort-chevron.open { transform: rotate(180deg); }
+.cf-sort-menu {
+  position: absolute; right: 0; top: calc(100% - 4px); z-index: 50;
+  background: var(--bg-warm); border: 1px solid var(--hairline);
+  min-width: 180px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
 }
-.cf-sort-wrap::after {
-  content: "";
-  position: absolute; right: 0; top: 50%; transform: translateY(-50%);
-  width: 8px; height: 8px;
-  border-right: 1px solid currentColor;
-  border-bottom: 1px solid currentColor;
-  transform: translateY(-65%) rotate(45deg);
-  pointer-events: none;
+.cf-sort-opt {
+  display: block; width: 100%;
+  text-align: left; padding: 13px 20px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--muted);
+  border-bottom: 1px solid var(--hairline);
+  transition: background .15s ease, color .15s ease;
+  cursor: pointer;
 }
-.cf-sort select {
-  appearance: none; -webkit-appearance: none;
-  background: transparent; border: none; outline: none; cursor: pointer;
-  font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em;
-  text-transform: uppercase; color: inherit;
-  padding-right: 18px;
-}
-.cf-sort:hover, .cf-sort:hover select { color: var(--ink); }
+.cf-sort-opt:last-child { border-bottom: none; }
+.cf-sort-opt:hover { background: var(--bg-stone); color: var(--ink); }
+.cf-sort-opt.active { color: var(--ink); }
 
 @media (max-width: 980px) {
   .cf-bar-inner { flex-wrap: wrap; gap: 0; }

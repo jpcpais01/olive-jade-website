@@ -1,5 +1,48 @@
 /* global React, ReactDOM */
-const { useState, useEffect } = React;
+const { useState, useEffect, useRef } = React;
+
+const SORT_OPTIONS = [
+  { value: "default",    label: "Featured"        },
+  { value: "price-asc",  label: "Price: Low → High" },
+  { value: "price-desc", label: "Price: High → Low" },
+];
+
+function SortDropdown({ value, onChange }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  const current = SORT_OPTIONS.find(o => o.value === value);
+
+  useEffect(() => {
+    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  return (
+    <div className="cf-sort-custom" ref={ref}>
+      <button className="cf-sort-btn" onClick={() => setOpen(o => !o)}>
+        <span className="cf-sort-label">Sort</span>
+        <span className="cf-sort-value">{current.label}</span>
+        <svg className={"cf-sort-chevron" + (open ? " open" : "")} width="10" height="10" viewBox="0 0 10 10" fill="none">
+          <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+        </svg>
+      </button>
+      {open && (
+        <div className="cf-sort-menu">
+          {SORT_OPTIONS.map(o => (
+            <button
+              key={o.value}
+              className={"cf-sort-opt" + (o.value === value ? " active" : "")}
+              onClick={() => { onChange(o.value); setOpen(false); }}
+            >
+              {o.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 const CATS = [
   { slug: "all",       label: "All"       },
@@ -82,16 +125,7 @@ function CollectionApp() {
                 </button>
               ))}
             </nav>
-            <label className="cf-sort">
-              <span className="cf-sort-label">Sort by</span>
-              <div className="cf-sort-wrap">
-                <select value={sort} onChange={e => setSort(e.target.value)}>
-                  <option value="default">Featured</option>
-                  <option value="price-asc">Price: Low to High</option>
-                  <option value="price-desc">Price: High to Low</option>
-                </select>
-              </div>
-            </label>
+            <SortDropdown value={sort} onChange={setSort} />
           </div>
         </div>
 

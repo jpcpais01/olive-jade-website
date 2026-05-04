@@ -253,91 +253,79 @@ body.sea-cursor-on, body.sea-cursor-on a, body.sea-cursor-on button { cursor: no
 @keyframes scrollCue { 0% { top: -50%; } 100% { top: 100%; } }
 
 @media (max-width: 880px) {
-  /* ── Hero height: use dynamic viewport height so browser chrome is excluded ── */
+  /* ── Hero: size the entire section to the video's natural 16:9 aspect ratio.
+     This means the hero height = screen-width × 9/16.
+     object-fit: cover on a matching-ratio container = zero cropping, full width visible.
+     No letterbox bands, no huge black voids above/below.                           ── */
   .sea-hero {
-    height: 100vh;
-    min-height: 0;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    min-height: 200px;
     max-height: none;
   }
-  /* dvh supported on all modern mobile browsers */
-  @supports (height: 100dvh) {
-    .sea-hero { height: 100dvh; }
-  }
 
-  /* ── VIDEO: switch to contain so the full width is visible.
-     object-fit: cover on a portrait screen zooms landscape videos heavily
-     and crops both sides. contain shows the complete frame; the dark hero
-     background (#0A0A08) fills the letterbox bands.                       ── */
+  /* Video fills the 16:9 container with zero cropping — no scale needed */
   .sea-hero-slide video,
   .sea-hero-slide .sea-hero-img {
-    object-fit: contain;
-    transform: none; /* remove the base scale(1.08) — breaks contain bounds */
+    object-fit: cover;
+    transform: none; /* remove base scale(1.08) which would re-introduce cropping */
   }
-
-  /* Ken Burns uses scale which is incompatible with contain — disable it */
+  /* Ken Burns also uses scale — disable to keep full width */
   .sea-hero-slide.active video,
   .sea-hero-slide.active .sea-hero-img {
     animation: none;
   }
 
-  /* Decorative SVG ornaments overflow on small screens */
-  .sea-orn { display: none; }
+  /* ── Decorative elements that don't fit in the compact hero ── */
+  .sea-orn        { display: none; }
   .sea-scroll-cue { display: none; }
+  .sea-hero-top   { display: none; } /* coords need room that doesn't exist here */
 
-  /* ── Layout: scale all text & spacing to fit the phone screen ── */
-  .sea-hero-top {
-    padding: 78px var(--pad-x) 0;
-    font-size: 8px;
-    letter-spacing: 0.18em;
+  /* ── Overlay: compress padding so content fits inside the short hero ── */
+  .sea-hero-overlay {
+    padding: 52px var(--pad-x) 6px;
+    gap: 4px;
+  }
+
+  /* Eyebrow */
+  .sea-hero-eyebrow {
+    font-size: 8.5px;
+    letter-spacing: 0.22em;
+    margin-bottom: 6px;
+  }
+  .sea-hero-eyebrow .seh-dot { width: 4px; height: 4px; }
+
+  /* Headline — keep both lines but smaller */
+  .sea-hero-headline {
+    font-size: clamp(22px, 7vw, 38px);
+    line-height: 0.96;
+    max-width: 100%;
+  }
+
+  /* Sub text takes too much vertical space in a short hero */
+  .sea-hero-sub { display: none; }
+
+  /* Actions */
+  .sea-hero-actions {
+    margin-top: 8px !important;
     gap: 10px;
     flex-wrap: wrap;
   }
-  .sea-hero-top .sht-l .sht-line { width: 20px; }
-
-  .sea-hero-overlay {
-    padding: 110px var(--pad-x) 22px;
-    gap: 18px;
-  }
-  .sea-hero-eyebrow {
-    font-size: 9px;
-    letter-spacing: 0.26em;
-    margin-bottom: 18px;
-  }
-  .sea-hero-headline {
-    font-size: clamp(40px, 11.5vw, 84px);
-    line-height: 0.96;
-    max-width: 12ch;
-  }
-  .sea-hero-sub {
-    font-size: 15px;
-    margin-top: 14px;
-    max-width: 100%;
-  }
-  .sea-hero-actions {
-    margin-top: 22px !important;
-    gap: 14px;
-    flex-wrap: wrap;
-  }
-  .btn-sand { padding: 15px 22px; font-size: 9px; }
-  .sea-hero-link  { font-size: 9px; }
+  .btn-sand   { padding: 10px 16px; font-size: 8.5px; letter-spacing: 0.18em; }
+  .sea-hero-link { display: none; } /* one CTA is enough in compact hero */
 
   /* Slide rail */
   .sea-hero-foot {
-    gap: 12px;
-    padding-top: 12px;
-    font-size: 7.5px;
-    letter-spacing: 0.16em;
-  }
-  .sea-hero-foot-rail { gap: 10px; width: 100%; }
-  .sea-hero-foot-rail button { gap: 6px; flex: 1; min-width: 0; }
-  .sea-hero-foot-rail .hf-bar { width: 20px; flex-shrink: 0; }
-  .sea-hero-foot-rail button > span:last-child {
+    padding-top: 5px;
+    gap: 8px;
     font-size: 7px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    min-width: 0;
+    letter-spacing: 0.14em;
   }
+  .sea-hero-foot-rail { gap: 8px; width: 100%; }
+  .sea-hero-foot-rail button { gap: 4px; flex: 1; min-width: 0; }
+  .sea-hero-foot-rail .hf-bar { width: 16px; flex-shrink: 0; }
+  /* No room for captions in compact rail */
+  .sea-hero-foot-rail button > span:last-child { display: none; }
 }
 
 /* ===== Tide marquee — under hero ===== */

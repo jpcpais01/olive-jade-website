@@ -111,8 +111,18 @@ function Nav({ current = "home", onNav, onOpenCart }) {
   const cart = useCart();
   const cartCount = cart.reduce((s, i) => s + i.qty, 0);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileShopOpen, setMobileShopOpen] = useState(false);
   const [shopOpen, setShopOpen] = useState(false);
   const shopRef = useRef(null);
+  const shopTimer = useRef(null);
+
+  const handleShopEnter = () => {
+    clearTimeout(shopTimer.current);
+    setShopOpen(true);
+  };
+  const handleShopLeave = () => {
+    shopTimer.current = setTimeout(() => setShopOpen(false), 180);
+  };
 
   useEffect(() => {
     const handler = (e) => { if (shopRef.current && !shopRef.current.contains(e.target)) setShopOpen(false); };
@@ -147,8 +157,8 @@ function Nav({ current = "home", onNav, onOpenCart }) {
         <div className="nav-links">
           {links.map(l => l.id === "shop" ? (
             <div key={l.id} className="nav-link-group" ref={shopRef}
-              onMouseEnter={() => setShopOpen(true)}
-              onMouseLeave={() => setShopOpen(false)}>
+              onMouseEnter={handleShopEnter}
+              onMouseLeave={handleShopLeave}>
               <a href={l.href} className={current === l.id ? "active" : ""} onClick={(e) => handleNav(e, l)}>
                 {l.label}
                 <svg className={"nav-sub-arr" + (shopOpen ? " open" : "")} width="8" height="6" viewBox="0 0 8 6" fill="none" aria-hidden="true">
@@ -170,8 +180,18 @@ function Nav({ current = "home", onNav, onOpenCart }) {
         <button className="close" onClick={() => setMobileOpen(false)}>Close</button>
         {links.map(l => (
           <React.Fragment key={l.id}>
-            <a href={l.href} onClick={(e) => handleNav(e, l)}>{l.label}</a>
-            {l.id === "shop" && (
+            {l.id === "shop" ? (
+              <button className={"mobile-coll-btn" + (mobileShopOpen ? " open" : "")}
+                onClick={() => setMobileShopOpen(o => !o)}>
+                {l.label}
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true">
+                  <path d="M1.5 2.5L5 6L8.5 2.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
+                </svg>
+              </button>
+            ) : (
+              <a href={l.href} onClick={(e) => handleNav(e, l)}>{l.label}</a>
+            )}
+            {l.id === "shop" && mobileShopOpen && (
               <div className="mobile-sub">
                 {SUB_CATS.map(c => (
                   <a key={c.slug} href={c.href} onClick={() => setMobileOpen(false)}>{c.label}</a>

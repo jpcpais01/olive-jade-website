@@ -131,21 +131,11 @@ function CollectionApp() {
           </div>
         </header>
 
-        {/* ── Filter / sort bar ── */}
+        {/* ── Sort bar ── */}
         <div className="cf-bar">
-          <div className="cf-bar-inner">
-            <nav className="cf-cats" aria-label="Filter by category">
-              {CATS.map(c => (
-                <a key={c.slug} href={`shop.html${c.slug === "all" ? "" : "?cat=" + c.slug}`}
-                  className={"cf-cat-link" + (cat === c.slug ? " active" : "")}>
-                  {c.label}
-                </a>
-              ))}
-            </nav>
-            <div className="cf-right">
-              {displayed && <span className="cf-count">{String(displayed.length).padStart(2,"0")} pieces</span>}
-              <SortDropdown value={sort} onChange={setSort} />
-            </div>
+          <div className="cf-bar-inner cf-bar-inner--sort">
+            {displayed && <span className="cf-count">{String(displayed.length).padStart(2,"0")} pieces</span>}
+            <SortDropdown value={sort} onChange={setSort} />
           </div>
         </div>
 

@@ -43,7 +43,7 @@
 /* Top mark — small mono */
 #jo-loader .jol-eyebrow {
   position: absolute; top: 32px; left: 50%; transform: translateX(-50%);
-  display: inline-flex; align-items: center; gap: 12px;
+  display: inline-flex; align-items: center; gap: 12px; white-space: nowrap;
   font-family: "JetBrains Mono", ui-monospace, monospace;
   font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase;
   color: rgba(242,239,232,0.65);

@@ -101,8 +101,7 @@ function SeaHero() {
             <span className="rv-mask"><span>Worn for</span></span>
             <span className="rv-mask"><span>the <em>long</em> while.</span></span>
           </h1>
-          <p className="sea-hero-sub">Discover the new mediterranean inspired summer collection.</p>
-          <div className="sea-hero-actions">
+<div className="sea-hero-actions">
             <window.Magnetic strength={0.25}><a href="shop.html" className="btn-sand">Spring Edition <window.Icon.Arrow /></a></window.Magnetic>
           </div>
         </div>

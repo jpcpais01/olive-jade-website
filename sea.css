@@ -253,14 +253,38 @@ body.sea-cursor-on, body.sea-cursor-on a, body.sea-cursor-on button { cursor: no
 @keyframes scrollCue { 0% { top: -50%; } 100% { top: 100%; } }
 
 @media (max-width: 880px) {
-  /* HERO — keep full desktop composition, just scale to fit phone screen */
-  .sea-hero { min-height: 580px; }
+  /* ── Hero height: use dynamic viewport height so browser chrome is excluded ── */
+  .sea-hero {
+    height: 100vh;
+    min-height: 0;
+    max-height: none;
+  }
+  /* dvh supported on all modern mobile browsers */
+  @supports (height: 100dvh) {
+    .sea-hero { height: 100dvh; }
+  }
 
-  /* Decorative-only elements that overflow / clutter on small screens */
+  /* ── VIDEO: switch to contain so the full width is visible.
+     object-fit: cover on a portrait screen zooms landscape videos heavily
+     and crops both sides. contain shows the complete frame; the dark hero
+     background (#0A0A08) fills the letterbox bands.                       ── */
+  .sea-hero-slide video,
+  .sea-hero-slide .sea-hero-img {
+    object-fit: contain;
+    transform: none; /* remove the base scale(1.08) — breaks contain bounds */
+  }
+
+  /* Ken Burns uses scale which is incompatible with contain — disable it */
+  .sea-hero-slide.active video,
+  .sea-hero-slide.active .sea-hero-img {
+    animation: none;
+  }
+
+  /* Decorative SVG ornaments overflow on small screens */
   .sea-orn { display: none; }
   .sea-scroll-cue { display: none; }
 
-  /* Top tickers — keep both, shrink type so they fit on one row */
+  /* ── Layout: scale all text & spacing to fit the phone screen ── */
   .sea-hero-top {
     padding: 78px var(--pad-x) 0;
     font-size: 8px;
@@ -268,55 +292,47 @@ body.sea-cursor-on, body.sea-cursor-on a, body.sea-cursor-on button { cursor: no
     gap: 10px;
     flex-wrap: wrap;
   }
-  .sea-hero-top .sht-l .sht-line { width: 22px; }
+  .sea-hero-top .sht-l .sht-line { width: 20px; }
 
-  /* Center stack — same content, scaled */
   .sea-hero-overlay {
-    padding: 110px var(--pad-x) 24px;
-    gap: 20px;
+    padding: 110px var(--pad-x) 22px;
+    gap: 18px;
   }
   .sea-hero-eyebrow {
     font-size: 9px;
-    letter-spacing: 0.28em;
-    margin-bottom: 22px;
+    letter-spacing: 0.26em;
+    margin-bottom: 18px;
   }
   .sea-hero-headline {
-    font-size: clamp(46px, 13vw, 92px);
+    font-size: clamp(40px, 11.5vw, 84px);
     line-height: 0.96;
     max-width: 12ch;
   }
   .sea-hero-sub {
-    font-size: 16px;
-    margin-top: 18px;
+    font-size: 15px;
+    margin-top: 14px;
     max-width: 100%;
   }
   .sea-hero-actions {
-    margin-top: 26px !important;
-    gap: 16px;
+    margin-top: 22px !important;
+    gap: 14px;
     flex-wrap: wrap;
   }
-  .btn-sand { padding: 16px 24px; font-size: 9.5px; }
-  .sea-hero-link { font-size: 9.5px; }
+  .btn-sand { padding: 15px 22px; font-size: 9px; }
+  .sea-hero-link  { font-size: 9px; }
 
-  /* Slide rail — keep all 3 slides with caption, shrink type to fit */
+  /* Slide rail */
   .sea-hero-foot {
-    gap: 14px;
-    padding-top: 14px;
-    font-size: 8px;
-    letter-spacing: 0.18em;
-  }
-  .sea-hero-foot-rail {
     gap: 12px;
-    width: 100%;
-  }
-  .sea-hero-foot-rail button {
-    gap: 6px;
-    flex: 1;
-    min-width: 0;
-  }
-  .sea-hero-foot-rail .hf-bar { width: 22px; flex-shrink: 0; }
-  .sea-hero-foot-rail button > span:last-child {
+    padding-top: 12px;
     font-size: 7.5px;
+    letter-spacing: 0.16em;
+  }
+  .sea-hero-foot-rail { gap: 10px; width: 100%; }
+  .sea-hero-foot-rail button { gap: 6px; flex: 1; min-width: 0; }
+  .sea-hero-foot-rail .hf-bar { width: 20px; flex-shrink: 0; }
+  .sea-hero-foot-rail button > span:last-child {
+    font-size: 7px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

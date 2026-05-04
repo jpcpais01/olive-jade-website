@@ -25,7 +25,6 @@ function SeaHeroSlide({ slot, i, active, onReady }) {
 
 function SeaHero() {
   const [active, setActive] = useState(0);
-  const [progress, setProgress] = useState(0);
   const [firstReady, setFirstReady] = useState(false);
   const DURATION = 7500;
 
@@ -34,7 +33,6 @@ function SeaHero() {
     let start = performance.now(); let raf;
     const tick = (t) => {
       const p = Math.min(1, (t - start) / DURATION);
-      setProgress(p);
       if (p >= 1) { start = t; setActive(a => (a + 1) % HERO_SLOTS.length); }
       raf = requestAnimationFrame(tick);
     };
@@ -97,17 +95,8 @@ function SeaHero() {
       </div>
       <div ref={orn4} className="sea-orn sea-orn-4" aria-hidden="true"><svg viewBox="0 0 400 80" preserveAspectRatio="none"><path d="M0 40 Q 100 0 200 40 T 400 40" fill="none" stroke="currentColor" strokeWidth="0.6"/></svg></div>
 
-      <div className="sea-hero-top">
-        <div className="sht-l"><span className="sht-line" /><span>Maison · MMXXVI · Spring</span></div>
-        <div>38.72°N · 9.13°W ⟷ 35.01°N · 135.76°E</div>
-      </div>
-
       <div className="sea-hero-overlay">
         <div className="sea-hero-content">
-          <div className="sea-hero-eyebrow">
-            <span className="seh-dot" />
-            <span>Of two seas — quietly worn</span>
-          </div>
           <h1 className="sea-hero-headline">
             <span className="rv-mask"><span>Worn for</span></span>
             <span className="rv-mask"><span>the <em>long</em> while.</span></span>
@@ -115,19 +104,6 @@ function SeaHero() {
           <p className="sea-hero-sub">A small house drawing from the Atlantic, the Mediterranean &amp; the Sea of Japan.</p>
           <div className="sea-hero-actions">
             <window.Magnetic strength={0.25}><a href="shop.html" className="btn-sand">Spring Edition <window.Icon.Arrow /></a></window.Magnetic>
-            <window.Magnetic strength={0.2}><a href="about.html" className="sea-hero-link">The Maison <window.Icon.Arrow /></a></window.Magnetic>
-          </div>
-        </div>
-
-        <div className="sea-hero-foot">
-          <div className="sea-hero-foot-rail">
-            {HERO_SLOTS.map((s, i) => (
-              <button key={i} className={i === active ? "active" : ""} onClick={() => { setActive(i); setProgress(0); }}>
-                <span>{String(i+1).padStart(2,"0")}</span>
-                <span className="hf-bar"><span className="hf-bar-fill" style={{ width: i === active ? `${progress*100}%` : i < active ? "100%" : "0%" }} /></span>
-                <span>{s.caption.split(" — ")[1]}</span>
-              </button>
-            ))}
           </div>
         </div>
       </div>

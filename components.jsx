@@ -121,21 +121,21 @@ function Nav({ current = "home", onNav, onOpenCart }) {
   return (
     <React.Fragment>
       <nav className={"nav" + (scrolled ? " scrolled" : "")}>
-        <a href="index.html" onClick={(e) => handleNav(e, links[0])}><Wordmark /></a>
-        <div className="nav-links">
-          {links.map(l => (
-            <a key={l.id} href={l.href} className={current === l.id ? "active" : ""} onClick={(e) => handleNav(e, l)}>{l.label}</a>
-          ))}
-        </div>
+        <button className="mobile-menu-btn" onClick={() => setMobileOpen(true)} aria-label="Menu">
+          <span/><span/><span/>
+        </button>
+        <a href="index.html" className="nav-brand" onClick={(e) => handleNav(e, links[0])}><Wordmark size={26} /></a>
         <div className="nav-actions">
           <button className="cart" onClick={onOpenCart} aria-label="Open bag">
             <Icon.Bag />
             <span style={{ fontFamily: "var(--mono)", fontSize: 11, letterSpacing: "0.1em" }}>BAG</span>
             {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
           </button>
-          <button className="mobile-menu-btn" onClick={() => setMobileOpen(true)} aria-label="Menu">
-            <span/><span/><span/>
-          </button>
+        </div>
+        <div className="nav-links">
+          {links.map(l => (
+            <a key={l.id} href={l.href} className={current === l.id ? "active" : ""} onClick={(e) => handleNav(e, l)}>{l.label}</a>
+          ))}
         </div>
       </nav>
       <div className={"mobile-panel" + (mobileOpen ? " open" : "")}>

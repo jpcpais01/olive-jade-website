@@ -191,8 +191,8 @@ function Nav({ current = "home", onNav, onOpenCart }) {
             ) : (
               <a href={l.href} onClick={(e) => handleNav(e, l)}>{l.label}</a>
             )}
-            {l.id === "shop" && mobileShopOpen && (
-              <div className="mobile-sub">
+            {l.id === "shop" && (
+              <div className={"mobile-sub" + (mobileShopOpen ? " open" : "")}>
                 {SUB_CATS.map(c => (
                   <a key={c.slug} href={c.href} onClick={() => setMobileOpen(false)}>{c.label}</a>
                 ))}

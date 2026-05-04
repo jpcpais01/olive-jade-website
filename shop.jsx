@@ -52,6 +52,14 @@ const CATS = [
   { slug: "bracelets", label: "Bracelets" },
 ];
 
+const CAT_META = {
+  all:       { title: "The", em: "Collection", sub: "All pieces, all seasons",   img: "images/collection-banner.png" },
+  rings:     { title: "",    em: "Rings",       sub: "Worn on the hand",          img: "images/cat-rings.png"         },
+  necklaces: { title: "",    em: "Necklaces",   sub: "Close to the skin",         img: "images/cat-necklaces.png"     },
+  earrings:  { title: "",    em: "Earrings",    sub: "Light and considered",      img: "images/cat-earrings.png"      },
+  bracelets: { title: "",    em: "Bracelets",   sub: "Worn with ease",            img: "images/cat-bracelets.png"     },
+};
+
 // ─── Product card ───────────────────────────────────────────────
 function ProductItem({ p, index }) {
   return (
@@ -98,16 +106,28 @@ function CollectionApp() {
       })
     : null;
 
+  const meta = CAT_META[cat] || CAT_META.all;
+
   return (
     <React.Fragment>
       <window.Nav current="shop" onOpenCart={() => setCartOpen(true)} />
       <main>
 
-        {/* ── Page header ── */}
+        {/* ── Cinematic hero header ── */}
         <header className="ch">
-          <div className="ch-banner"><img src="images/collection-banner.png" alt="" /></div>
-          <div className="ch-inner">
-            <h1 className="ch-title">The <em>Collection</em></h1>
+          <div className="ch-hero">
+            <img src={meta.img} alt="" className="ch-hero-img" />
+            <div className="ch-hero-veil" />
+            <div className="ch-hero-fade" />
+            <div className="ch-hero-content">
+              <div className="ch-hero-inner">
+                <p className="ch-hero-sub">{meta.sub}</p>
+                <h1 className="ch-title">
+                  {meta.title && <span>{meta.title} </span>}
+                  <em>{meta.em}</em>
+                </h1>
+              </div>
+            </div>
           </div>
         </header>
 
@@ -116,16 +136,16 @@ function CollectionApp() {
           <div className="cf-bar-inner">
             <nav className="cf-cats" aria-label="Filter by category">
               {CATS.map(c => (
-                <button
-                  key={c.slug}
-                  className={cat === c.slug ? "active" : ""}
-                  onClick={() => setCat(c.slug)}
-                >
+                <a key={c.slug} href={`shop.html${c.slug === "all" ? "" : "?cat=" + c.slug}`}
+                  className={"cf-cat-link" + (cat === c.slug ? " active" : "")}>
                   {c.label}
-                </button>
+                </a>
               ))}
             </nav>
-            <SortDropdown value={sort} onChange={setSort} />
+            <div className="cf-right">
+              {displayed && <span className="cf-count">{String(displayed.length).padStart(2,"0")} pieces</span>}
+              <SortDropdown value={sort} onChange={setSort} />
+            </div>
           </div>
         </div>
 

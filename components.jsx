@@ -98,23 +98,36 @@ function WordmarkLarge() {
 }
 
 // ---- Nav ------------------------------------------------------------
+const SUB_CATS = [
+  { slug: "all",       label: "All Pieces",  href: "shop.html"               },
+  { slug: "rings",     label: "Rings",       href: "shop.html?cat=rings"     },
+  { slug: "necklaces", label: "Necklaces",   href: "shop.html?cat=necklaces" },
+  { slug: "earrings",  label: "Earrings",    href: "shop.html?cat=earrings"  },
+  { slug: "bracelets", label: "Bracelets",   href: "shop.html?cat=bracelets" },
+];
+
 function Nav({ current = "home", onNav, onOpenCart }) {
   const scrolled = useScrolled(30);
   const cart = useCart();
   const cartCount = cart.reduce((s, i) => s + i.qty, 0);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [shopOpen, setShopOpen] = useState(false);
+  const shopRef = useRef(null);
+
+  useEffect(() => {
+    const handler = (e) => { if (shopRef.current && !shopRef.current.contains(e.target)) setShopOpen(false); };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
 
   const links = [
-    { id: "home", label: "Home", href: "index.html" },
-    { id: "shop", label: "Collection", href: "shop.html" },
-    { id: "story", label: "About us", href: "about.html" },
+    { id: "home",  label: "Home",       href: "index.html" },
+    { id: "shop",  label: "Collection", href: "shop.html"  },
+    { id: "story", label: "About us",   href: "about.html" },
   ];
 
   const handleNav = (e, link) => {
-    if (onNav) {
-      e.preventDefault();
-      onNav(link);
-    }
+    if (onNav) { e.preventDefault(); onNav(link); }
     setMobileOpen(false);
   };
 
@@ -132,7 +145,23 @@ function Nav({ current = "home", onNav, onOpenCart }) {
           </button>
         </div>
         <div className="nav-links">
-          {links.map(l => (
+          {links.map(l => l.id === "shop" ? (
+            <div key={l.id} className="nav-link-group" ref={shopRef}
+              onMouseEnter={() => setShopOpen(true)}
+              onMouseLeave={() => setShopOpen(false)}>
+              <a href={l.href} className={current === l.id ? "active" : ""} onClick={(e) => handleNav(e, l)}>
+                {l.label}
+                <svg className={"nav-sub-arr" + (shopOpen ? " open" : "")} width="8" height="6" viewBox="0 0 8 6" fill="none" aria-hidden="true">
+                  <path d="M1 1.5L4 4.5L7 1.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+                </svg>
+              </a>
+              <div className={"nav-sub" + (shopOpen ? " open" : "")}>
+                {SUB_CATS.map(c => (
+                  <a key={c.slug} href={c.href} onClick={() => setShopOpen(false)}>{c.label}</a>
+                ))}
+              </div>
+            </div>
+          ) : (
             <a key={l.id} href={l.href} className={current === l.id ? "active" : ""} onClick={(e) => handleNav(e, l)}>{l.label}</a>
           ))}
         </div>
@@ -140,7 +169,16 @@ function Nav({ current = "home", onNav, onOpenCart }) {
       <div className={"mobile-panel" + (mobileOpen ? " open" : "")}>
         <button className="close" onClick={() => setMobileOpen(false)}>Close</button>
         {links.map(l => (
-          <a key={l.id} href={l.href} onClick={(e) => handleNav(e, l)}>{l.label}</a>
+          <React.Fragment key={l.id}>
+            <a href={l.href} onClick={(e) => handleNav(e, l)}>{l.label}</a>
+            {l.id === "shop" && (
+              <div className="mobile-sub">
+                {SUB_CATS.map(c => (
+                  <a key={c.slug} href={c.href} onClick={() => setMobileOpen(false)}>{c.label}</a>
+                ))}
+              </div>
+            )}
+          </React.Fragment>
         ))}
       </div>
     </React.Fragment>

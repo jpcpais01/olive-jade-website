@@ -2,57 +2,80 @@
    THE COLLECTION — elite rework
    ===================================================================== */
 
-/* ── Page header ──────────────────────────────────────────────────── */
-.ch {
-  background: var(--bg);
-  border-bottom: 1px solid var(--hairline);
-  padding-bottom: 48px;
+/* ── Cinematic page header ────────────────────────────────────────── */
+.ch { border-bottom: 1px solid var(--hairline); }
+.ch-hero {
+  position: relative; width: 100%; height: 540px;
+  overflow: hidden; background: var(--bg-stone);
 }
-.ch-banner {
-  width: 100%;
-  height: 380px;
-  margin-top: 74px;
-  background: var(--bg-stone);
-  overflow: hidden;
+.ch-hero-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover; object-position: center 30%;
+  display: block;
 }
-.ch-banner img {
-  width: 100%; height: 100%; object-fit: cover; display: block;
+/* Atmospheric dark veil for text legibility */
+.ch-hero-veil {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom,
+    rgba(10,10,8,0.15) 0%,
+    rgba(10,10,8,0.38) 50%,
+    rgba(10,10,8,0.72) 100%);
 }
-.ch-inner {
+/* Fade image into page background at the bottom */
+.ch-hero-fade {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 200px;
+  background: linear-gradient(to bottom, transparent 0%, var(--bg) 100%);
+}
+.ch-hero-content {
+  position: absolute; bottom: 0; left: 0; right: 0; z-index: 2;
+}
+.ch-hero-inner {
   max-width: var(--maxw); margin: 0 auto;
-  padding: 40px var(--pad-x) 0;
+  padding: 0 var(--pad-x) 52px;
+}
+.ch-hero-sub {
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.28em;
+  text-transform: uppercase; color: rgba(242,237,224,0.5);
+  margin-bottom: 14px;
 }
 .ch-title {
   font-family: var(--serif); font-weight: 400;
-  font-size: clamp(40px, 6vw, 88px);
-  line-height: 0.9; letter-spacing: -0.026em; color: var(--ink);
+  font-size: clamp(52px, 7.5vw, 112px);
+  line-height: 0.88; letter-spacing: -0.026em; color: #F2EDE0;
 }
-.ch-title em { font-style: italic; color: var(--jade); }
+.ch-title em { font-style: italic; color: var(--sand); }
 
 @media (max-width: 880px) {
-  .ch-banner { height: 240px; margin-top: 56px; }
-  .ch-inner { padding-top: 28px; }
+  .ch-hero { height: 380px; }
+  .ch-hero-inner { padding-bottom: 36px; }
+  .ch-title { font-size: clamp(44px, 12vw, 72px); }
 }
 
 
 /* ── Filter / sort bar ────────────────────────────────────────────── */
-.cf-bar {
-  border-bottom: 1px solid var(--hairline);
-}
+.cf-bar { border-bottom: 1px solid var(--hairline); }
 .cf-bar-inner {
   max-width: var(--maxw); margin: 0 auto;
   padding: 0 var(--pad-x);
   display: flex; justify-content: space-between; align-items: center; gap: 24px;
 }
-.cf-cats { display: flex; gap: 4px; }
-.cf-cats button {
+.cf-cats { display: flex; gap: 0; }
+.cf-cat-link {
   font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
   color: var(--muted); padding: 18px 16px;
   border-bottom: 2px solid transparent;
   transition: color .2s ease, border-color .2s ease;
+  white-space: nowrap;
 }
-.cf-cats button:hover { color: var(--ink); }
-.cf-cats button.active { color: var(--ink); border-bottom-color: var(--ink); }
+.cf-cat-link:hover { color: var(--ink); }
+.cf-cat-link.active { color: var(--ink); border-bottom-color: var(--ink); }
+.cf-right {
+  display: flex; align-items: center; gap: 24px; flex-shrink: 0;
+}
+.cf-count {
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--muted);
+}
 .cf-sort-custom {
   position: relative; flex-shrink: 0;
 }
@@ -90,7 +113,8 @@
 @media (max-width: 980px) {
   .cf-bar-inner { flex-wrap: wrap; gap: 0; }
   .cf-cats { overflow-x: auto; width: 100%; border-bottom: 1px solid var(--hairline); }
-  .cf-sort { padding: 14px 0; }
+  .cf-right { padding: 14px 0; }
+  .cf-count { display: none; }
 }
 
 

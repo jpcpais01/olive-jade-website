@@ -253,26 +253,37 @@ body.sea-cursor-on, body.sea-cursor-on a, body.sea-cursor-on button { cursor: no
 @keyframes scrollCue { 0% { top: -50%; } 100% { top: 100%; } }
 
 @media (max-width: 880px) {
-  /* Hero: shrink to fit actual phone screen */
-  .sea-hero { min-height: 560px; }
+  /* HERO — keep full desktop composition, just scale to fit phone screen */
+  .sea-hero { min-height: 580px; }
 
-  .sea-hero-overlay {
-    padding: 110px var(--pad-x) 28px;
-    gap: 20px;
-  }
-  .sea-hero-top {
-    padding: 80px var(--pad-x) 0;
-    font-size: 9px;
-  }
-  /* Hide the right-side coords on mobile — too cramped */
-  .sea-hero-top > div:last-child { display: none; }
-
+  /* Decorative-only elements that overflow / clutter on small screens */
   .sea-orn { display: none; }
   .sea-scroll-cue { display: none; }
 
+  /* Top tickers — keep both, shrink type so they fit on one row */
+  .sea-hero-top {
+    padding: 78px var(--pad-x) 0;
+    font-size: 8px;
+    letter-spacing: 0.18em;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .sea-hero-top .sht-l .sht-line { width: 22px; }
+
+  /* Center stack — same content, scaled */
+  .sea-hero-overlay {
+    padding: 110px var(--pad-x) 24px;
+    gap: 20px;
+  }
+  .sea-hero-eyebrow {
+    font-size: 9px;
+    letter-spacing: 0.28em;
+    margin-bottom: 22px;
+  }
   .sea-hero-headline {
-    font-size: clamp(44px, 12vw, 84px);
-    max-width: 100%;
+    font-size: clamp(46px, 13vw, 92px);
+    line-height: 0.96;
+    max-width: 12ch;
   }
   .sea-hero-sub {
     font-size: 16px;
@@ -280,14 +291,37 @@ body.sea-cursor-on, body.sea-cursor-on a, body.sea-cursor-on button { cursor: no
     max-width: 100%;
   }
   .sea-hero-actions {
-    margin-top: 24px !important;
+    margin-top: 26px !important;
     gap: 16px;
     flex-wrap: wrap;
   }
-  /* Slide rail: hide the long caption labels, keep number + bar */
-  .sea-hero-foot { gap: 16px; padding-top: 16px; }
-  .sea-hero-foot-rail { gap: 12px; }
-  .sea-hero-foot-rail button > span:last-child { display: none; }
+  .btn-sand { padding: 16px 24px; font-size: 9.5px; }
+  .sea-hero-link { font-size: 9.5px; }
+
+  /* Slide rail — keep all 3 slides with caption, shrink type to fit */
+  .sea-hero-foot {
+    gap: 14px;
+    padding-top: 14px;
+    font-size: 8px;
+    letter-spacing: 0.18em;
+  }
+  .sea-hero-foot-rail {
+    gap: 12px;
+    width: 100%;
+  }
+  .sea-hero-foot-rail button {
+    gap: 6px;
+    flex: 1;
+    min-width: 0;
+  }
+  .sea-hero-foot-rail .hf-bar { width: 22px; flex-shrink: 0; }
+  .sea-hero-foot-rail button > span:last-child {
+    font-size: 7.5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
 }
 
 /* ===== Tide marquee — under hero ===== */
@@ -1069,67 +1103,61 @@ body.sea-cursor-on, body.sea-cursor-on a, body.sea-cursor-on button { cursor: no
 .four-seas .fs-foot-fill { position: absolute; left: 0; top: 0; bottom: 0; background: #F2EDE0; transition: width .15s linear; }
 
 @media (max-width: 880px) {
-  /* Undo sticky height set by JS */
-  .four-seas { height: auto !important; }
-
-  /* Unstick wrapper — fix overflow:hidden and flex that were clipping/misaligning content */
-  .four-seas .fs-stick {
-    position: relative;
-    height: auto;
-    overflow: visible;
-    display: block;
-  }
-
-  /* Hide scroll-driven visuals */
-  .four-seas .fs-stage,
-  .four-seas .fs-watermark,
-  .four-seas .fs-bg-veil,
-  .four-seas .fs-grain { display: none; }
+  /* TwoSeas — keep the desktop cinematic sticky+video experience.
+     Just scale text so the panel fits a phone viewport. */
 
   .four-seas .fs-head {
-    position: relative;
-    padding: 48px var(--pad-x) 32px;
+    padding: 76px var(--pad-x) 0;
   }
-
-  /* Stack content vertically */
-  .four-seas .fs-content {
-    position: relative;
-    /* Explicitly reset every inset property — 'inset: auto' alone isn't enough */
-    top: auto; left: auto; right: auto; bottom: auto;
-    width: 100%;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
+  .four-seas .fs-eyebrow {
+    font-size: 9px;
+    letter-spacing: 0.26em;
   }
+  .four-seas .fs-line { width: 28px; }
+  .four-seas .fs-prog-dot { width: 18px; }
 
-  /* Each panel: full-width card, fix the left:50% / top:55% offset from base CSS */
+  /* Center panel — narrower, smaller text, fits phone screen */
   .four-seas .fs-panel {
-    position: relative;
-    top: auto;
-    left: auto;           /* ← was 50% in base, causing panels to be off-screen */
-    width: 100%;
-    opacity: 1 !important;
-    transform: none !important;
-    text-align: left;
-    padding: 52px var(--pad-x) 56px;
-    border-bottom: 1px solid rgba(242,237,224,0.15);
-    pointer-events: auto;
+    width: calc(100% - 2 * var(--pad-x));
+    padding: 0 4px;
   }
-  .four-seas .fs-panel:last-child { border-bottom: none; }
-
-  .four-seas .fs-panel-num  { margin-bottom: 14px; }
-  .four-seas .fs-panel-place { margin-bottom: 28px; }
+  .four-seas .fs-panel-num {
+    font-size: 9px;
+    letter-spacing: 0.30em;
+    margin-bottom: 16px;
+  }
+  .four-seas .fs-panel-place {
+    font-size: 9px;
+    letter-spacing: 0.24em;
+    margin-bottom: 24px;
+  }
   .four-seas .fs-panel-name {
-    font-size: clamp(40px, 11vw, 72px);
+    font-size: clamp(44px, 13vw, 84px);
     white-space: normal;
-    margin-bottom: 20px;
+    line-height: 0.94;
+    margin-bottom: 22px;
   }
-  .four-seas .fs-panel-line { font-size: 17px; margin-bottom: 20px; }
-  .four-seas .fs-panel-body { font-size: 14.5px; max-width: 100%; }
+  .four-seas .fs-panel-line {
+    font-size: 17px;
+    margin-bottom: 22px;
+  }
+  .four-seas .fs-panel-body {
+    font-size: 14px;
+    line-height: 1.7;
+    max-width: 36ch;
+  }
 
+  /* Watermark — shrink so it doesn't dominate the small screen */
+  .four-seas .fs-watermark span {
+    font-size: clamp(120px, 32vw, 220px);
+  }
+
+  /* Foot index */
   .four-seas .fs-foot {
-    position: relative;
-    bottom: auto; left: auto; right: auto;
-    padding: 20px var(--pad-x) 52px;
+    bottom: 22px;
+    padding: 0;
+    font-size: 8.5px;
+    letter-spacing: 0.20em;
+    gap: 14px;
   }
 }

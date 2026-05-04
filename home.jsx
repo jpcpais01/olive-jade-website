@@ -135,7 +135,7 @@ function CollectionShowcase() {
   return (
     <section className="strip-i">
       <div className="strip-i-head">
-        <div className="strip-i-eyebrow rv"><span className="strip-i-line" /><span>I · The Spring Edition</span></div>
+        <div className="strip-i-eyebrow rv"><span className="strip-i-line" /><span>The Spring Edition</span></div>
         <h2 className="strip-i-title rv-up">Four pieces, this season.</h2>
       </div>
 
@@ -235,7 +235,7 @@ function TwoSeas() {
         </div>
 
         <div className="fs-head">
-          <div className="fs-eyebrow"><span className="fs-line" /><span>II · Drawn from two seas</span></div>
+          <div className="fs-eyebrow"><span className="fs-line" /><span>Drawn from two seas</span></div>
           <div className="fs-prog">
             {SEAS.map((s, i) => (
               <div key={i} className={"fs-prog-dot" + (i === active ? " active" : i < active ? " past" : "")} />
@@ -313,7 +313,7 @@ function SummerCollection() {
   return (
     <section className="summer">
       <div className="summer-head">
-        <div className="summer-eyebrow rv"><span className="summer-line" /><span>III · The Summer Edition · MMXXVI</span></div>
+        <div className="summer-eyebrow rv"><span className="summer-line" /><span>The Summer Edition · MMXXVI</span></div>
         <h2 className="summer-title rv-up">
           <span>Worn under</span><br/>
           <span><em>longer light.</em></span>
@@ -416,7 +416,7 @@ function Inspirations() {
   return (
     <section className={`inspo${visible ? " in" : ""}`} ref={sectionRef}>
       <div className="inspo-hd">
-        <div className="inspo-eyebrow"><span className="inspo-eb-line" /><span>IV · Inspirations</span></div>
+        <div className="inspo-eyebrow"><span className="inspo-eb-line" /><span>Inspirations</span></div>
         <h2 className="inspo-title">Drawn from <em>five coasts.</em></h2>
       </div>
 

@@ -204,6 +204,11 @@ body.sea-cursor-on, body.sea-cursor-on a, body.sea-cursor-on button { cursor: no
   transition: background .45s ease, color .45s ease, gap .4s ease;
 }
 .btn-sand:hover { background: transparent; color: #FBF9F3; gap: 22px; }
+/* Hero button — hollow / skeleton style */
+.sea-hero-actions .btn-sand {
+  background: transparent; color: #FBF9F3; border-color: rgba(251,249,243,0.55);
+}
+.sea-hero-actions .btn-sand:hover { background: rgba(251,249,243,0.1); border-color: #FBF9F3; gap: 22px; }
 .sea-hero-link {
   display: inline-flex; align-items: center; gap: 12px;
   font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.24em; text-transform: uppercase;

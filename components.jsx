@@ -200,6 +200,7 @@ function Nav({ current = "home", onNav, onOpenCart }) {
             )}
           </React.Fragment>
         ))}
+        <div className="mobile-panel-brand"><Wordmark size={32} /></div>
       </div>
     </React.Fragment>
   );

@@ -195,6 +195,10 @@ em { font-style: italic; }
 .mobile-sub a:first-child { padding-top: 3px; }
 .mobile-sub a:last-child { padding-bottom: 10px; }
 .mobile-sub a:hover { color: var(--ink); }
+.mobile-panel-brand {
+  margin-top: auto; padding-top: 48px;
+  opacity: 0.22;
+}
 
 @media (max-width: 880px) {
   .nav {

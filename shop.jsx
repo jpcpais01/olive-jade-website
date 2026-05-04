@@ -62,7 +62,7 @@ function CollectionApp() {
 
         {/* ── Page header ── */}
         <header className="ch">
-          <div className="ch-banner"><img src="images/collection-banner.jpg" alt="" /></div>
+          <div className="ch-banner"><img src="images/collection-banner.png" alt="" /></div>
           <div className="ch-inner">
             <h1 className="ch-title">The <em>Collection</em></h1>
           </div>
